@@ -1,7 +1,7 @@
 // src/lib/images.ts
 // Source unique de vérité pour tous les chemins d'images
 
-import { Supplier, MDFCategory, PromoImage } from '@/types/image';
+import { Supplier, MDFCategory, MDFDecorImage, PromoImage } from '@/types/image';
 
 export const IMG_BASE = '/images';
 
@@ -20,6 +20,79 @@ export function getImagePath(
 export function getPromoPath(supplier: Supplier, filename: string): string {
   return `${IMG_BASE}/${supplier}/promo/${filename}`;
 }
+
+import decorsManifest from './decors-manifest.json';
+
+// Dynamic Decors & Enterprise Logos Types
+export interface DynamicDecorItem {
+  filename: string;
+  name: string; // derived from filename without extension
+  src: string;  // browser URL /images/{supplier}/decors/{filename}
+  ext: string;
+  supplier: Supplier;
+}
+
+export interface EnterpriseDecorsData {
+  id: Supplier;
+  logo: string;
+  decorsCount: number;
+  decors: DynamicDecorItem[];
+}
+
+export const DYNAMIC_DECORS_MANIFEST: Record<string, EnterpriseDecorsData> =
+  (decorsManifest.enterprises as unknown as Record<string, EnterpriseDecorsData>) || {};
+
+// Dynamic Enterprise Logo resolver: checks scanned enterprise logo first, then fallback to UI logo
+export function getEnterpriseLogo(supplier: Supplier): string {
+  const enterprise = DYNAMIC_DECORS_MANIFEST[supplier];
+  if (enterprise && enterprise.logo) {
+    return enterprise.logo;
+  }
+  return `${IMG_BASE}/ui/logo-${supplier}.png`;
+}
+
+// Get all dynamic decors directly from the manifest (or for a specific enterprise)
+export function getDynamicDecors(supplier?: Supplier): DynamicDecorItem[] {
+  if (supplier) {
+    return DYNAMIC_DECORS_MANIFEST[supplier]?.decors || [];
+  }
+  const all: DynamicDecorItem[] = [];
+  for (const s of SUPPLIERS) {
+    const list = DYNAMIC_DECORS_MANIFEST[s]?.decors || [];
+    all.push(...list);
+  }
+  return all;
+}
+
+// Helper to construct dynamic Starwood decor list for MDF_CATALOG backwards compatibility
+const starwoodScannedDecors: MDFDecorImage[] = (
+  DYNAMIC_DECORS_MANIFEST.starwood?.decors || []
+).map((item, idx) => {
+  const lower = item.name.toLowerCase();
+  const colorFamily =
+    lower.includes('marbre') || lower.includes('béton') || lower.includes('beton')
+      ? 'matiere'
+      : lower.includes('métallique') || lower.includes('metallique') || lower.includes('perle')
+      ? 'brillant'
+      : lower.includes('blanc') || lower.includes('rouge') || lower.includes('bleu') || lower.includes('vison')
+      ? 'uni'
+      : 'bois';
+
+  return {
+    file: item.filename,
+    label: item.name,
+    ref: `SW-DC-${String(idx + 1).padStart(3, '0')}`,
+    colorFamily,
+    thicknesses: ['18mm'],
+  };
+});
+
+// Fallback items if manifest is ever empty
+const defaultStarwoodDecors: MDFDecorImage[] = [
+  { file: 'beton-cire-anthracite.webp', label: 'Béton Ciré', ref: 'SW-DC-001', colorFamily: 'matiere', thicknesses: ['18mm'] },
+  { file: 'parquet-chene.webp', label: 'Parquet Chêne', ref: 'SW-DC-002', colorFamily: 'bois', thicknesses: ['18mm'] },
+  { file: 'marbre-calacatta.webp', label: 'Calacatta', ref: 'SW-DC-003', colorFamily: 'matiere', thicknesses: ['18mm'] },
+];
 
 // Catalogue complet des décors MDF par fournisseur
 export const MDF_CATALOG: Record<Supplier, MDFCategory[]> = {
@@ -132,11 +205,7 @@ export const MDF_CATALOG: Record<Supplier, MDFCategory[]> = {
       id: 'decors-import',
       label: 'Décors Import',
       description: 'Décors haut de gamme importés de Turquie',
-      images: [
-        { file: 'beton-cire-anthracite.webp', label: 'Béton Ciré',     ref: 'SW-DC-001', colorFamily: 'matiere', thicknesses: ['18mm'] },
-        { file: 'parquet-chene.webp',         label: 'Parquet Chêne',  ref: 'SW-DC-002', colorFamily: 'bois', thicknesses: ['18mm'] },
-        { file: 'marbre-calacatta.webp',      label: 'Calacatta',      ref: 'SW-DC-003', colorFamily: 'matiere', thicknesses: ['18mm'] },
-      ],
+      images: starwoodScannedDecors.length > 0 ? starwoodScannedDecors : defaultStarwoodDecors,
       supplier: 'starwood',
       subfolder: 'decors',
     },

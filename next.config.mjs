@@ -1,3 +1,8 @@
+import { scanDecorsAndLogos } from './scripts/sync-decors.mjs';
+
+// Auto-sync decor images and enterprise logos on build/dev start
+scanDecorsAndLogos();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -9,3 +14,4 @@ const nextConfig = {
 };
 
 export default nextConfig;
+

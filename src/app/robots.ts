@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://www.socofeb.tn/sitemap.xml',
+    sitemap: 'https://www.socofeb.vercel.app/sitemap.xml',
   };
 }

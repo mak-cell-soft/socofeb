@@ -1,0 +1,317 @@
+{
+  "updatedAt": "2026-09-18T20:18:52.243Z",
+  "enterprises": {
+    "starwood": {
+      "id": "starwood",
+      "logo": "/images/starwood/logo/logo_starwood.png",
+      "decorsCount": 41,
+      "decors": [
+        {
+          "filename": "AFRIQUE 327.jpg",
+          "name": "AFRIQUE 327",
+          "src": "/images/starwood/decors/AFRIQUE 327.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "AYTAŞI 138.jpg",
+          "name": "AYTAŞI 138",
+          "src": "/images/starwood/decors/AYTAŞI 138.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "BALABAN 317.jpg",
+          "name": "BALABAN 317",
+          "src": "/images/starwood/decors/BALABAN 317.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "BENDİR 300.jpg",
+          "name": "BENDİR 300",
+          "src": "/images/starwood/decors/BENDİR 300.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "beton-cire-anthracite.webp",
+          "name": "beton-cire-anthracite",
+          "src": "/images/starwood/decors/beton-cire-anthracite.webp",
+          "ext": "webp",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "CHÊNE SAPHIR 102.jpg",
+          "name": "CHÊNE SAPHIR 102",
+          "src": "/images/starwood/decors/CHÊNE SAPHIR 102.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "COMPARAISON 282.jpg",
+          "name": "COMPARAISON 282",
+          "src": "/images/starwood/decors/COMPARAISON 282.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "COMPARAISON 308.jpg",
+          "name": "COMPARAISON 308",
+          "src": "/images/starwood/decors/COMPARAISON 308.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "DENİZ FENERİ 63.jpg",
+          "name": "DENİZ FENERİ 63",
+          "src": "/images/starwood/decors/DENİZ FENERİ 63.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "EBRU 181.jpg",
+          "name": "EBRU 181",
+          "src": "/images/starwood/decors/EBRU 181.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "Éphèse 305.jpg",
+          "name": "Éphèse 305",
+          "src": "/images/starwood/decors/Éphèse 305.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "EUROPE 326.jpg",
+          "name": "EUROPE 326",
+          "src": "/images/starwood/decors/EUROPE 326.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "FLORANSA 137.jpg",
+          "name": "FLORANSA 137",
+          "src": "/images/starwood/decors/FLORANSA 137.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "GEZGİN 194.jpg",
+          "name": "GEZGİN 194",
+          "src": "/images/starwood/decors/GEZGİN 194.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "GORDİON 303.jpg",
+          "name": "GORDİON 303",
+          "src": "/images/starwood/decors/GORDİON 303.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "HİTİT 306.jpg",
+          "name": "HİTİT 306",
+          "src": "/images/starwood/decors/HİTİT 306.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "ISTANBUL 103.jpg",
+          "name": "ISTANBUL 103",
+          "src": "/images/starwood/decors/ISTANBUL 103.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "KEMENÇE 294.jpg",
+          "name": "KEMENÇE 294",
+          "src": "/images/starwood/decors/KEMENÇE 294.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "KILAVUZ 195.jpg",
+          "name": "KILAVUZ 195",
+          "src": "/images/starwood/decors/KILAVUZ 195.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "LAGUNE 116.jpg",
+          "name": "LAGUNE 116",
+          "src": "/images/starwood/decors/LAGUNE 116.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "LUMIÈRE ANTIQUE 52.jpg",
+          "name": "LUMIÈRE ANTIQUE 52",
+          "src": "/images/starwood/decors/LUMIÈRE ANTIQUE 52.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "LUTRIN 291.jpg",
+          "name": "LUTRIN 291",
+          "src": "/images/starwood/decors/LUTRIN 291.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "marbre-calacatta.webp",
+          "name": "marbre-calacatta",
+          "src": "/images/starwood/decors/marbre-calacatta.webp",
+          "ext": "webp",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "MERCAN 122.jpg",
+          "name": "MERCAN 122",
+          "src": "/images/starwood/decors/MERCAN 122.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "MINIATURE 180.jpg",
+          "name": "MINIATURE 180",
+          "src": "/images/starwood/decors/MINIATURE 180.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "NOYERS MARBRÉS 72.jpg",
+          "name": "NOYERS MARBRÉS 72",
+          "src": "/images/starwood/decors/NOYERS MARBRÉS 72.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "PANIER 293.jpg",
+          "name": "PANIER 293",
+          "src": "/images/starwood/decors/PANIER 293.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "parquet-chene.webp",
+          "name": "parquet-chene",
+          "src": "/images/starwood/decors/parquet-chene.webp",
+          "ext": "webp",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "PERLE MÉTALLIQUE 19.jpg",
+          "name": "PERLE MÉTALLIQUE 19",
+          "src": "/images/starwood/decors/PERLE MÉTALLIQUE 19.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "PLEINE LUNE 161.jpg",
+          "name": "PLEINE LUNE 161",
+          "src": "/images/starwood/decors/PLEINE LUNE 161.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "PUSULA 189.jpg",
+          "name": "PUSULA 189",
+          "src": "/images/starwood/decors/PUSULA 189.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "RAHLE 291.jpg",
+          "name": "RAHLE 291",
+          "src": "/images/starwood/decors/RAHLE 291.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "ROTA 188.jpg",
+          "name": "ROTA 188",
+          "src": "/images/starwood/decors/ROTA 188.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "ROUGE MÉTALLIQUE 49.jpg",
+          "name": "ROUGE MÉTALLIQUE 49",
+          "src": "/images/starwood/decors/ROUGE MÉTALLIQUE 49.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "SABLE MÉTALLIQUE DU DÉSERT 93.jpg",
+          "name": "SABLE MÉTALLIQUE DU DÉSERT 93",
+          "src": "/images/starwood/decors/SABLE MÉTALLIQUE DU DÉSERT 93.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "SOFIA 147.jpg",
+          "name": "SOFIA 147",
+          "src": "/images/starwood/decors/SOFIA 147.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "SONOMO 17.jpg",
+          "name": "SONOMO 17",
+          "src": "/images/starwood/decors/SONOMO 17.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "TESBIH 282.jpg",
+          "name": "TESBIH 282",
+          "src": "/images/starwood/decors/TESBIH 282.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "TISSU DE VISON 62.jpg",
+          "name": "TISSU DE VISON 62",
+          "src": "/images/starwood/decors/TISSU DE VISON 62.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "UD 297.jpg",
+          "name": "UD 297",
+          "src": "/images/starwood/decors/UD 297.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "VISON BEJ 170.jpg",
+          "name": "VISON BEJ 170",
+          "src": "/images/starwood/decors/VISON BEJ 170.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        }
+      ]
+    },
+    "stibois": {
+      "id": "stibois",
+      "logo": "/images/stibois/logo/logo_stibois.png",
+      "decorsCount": 0,
+      "decors": []
+    },
+    "propann": {
+      "id": "propann",
+      "logo": "/images/propann/logo/logo_propann.png",
+      "decorsCount": 0,
+      "decors": []
+    },
+    "mpbs": {
+      "id": "mpbs",
+      "logo": "/images/ui/logo-mpbs.png",
+      "decorsCount": 0,
+      "decors": []
+    }
+  }
+}
