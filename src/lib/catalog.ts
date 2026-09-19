@@ -193,7 +193,7 @@ export const SUPPLIER_CONFIG: SupplierConfigMap = {
     name: 'MPBS',
     fullName: 'MPBS – Leader des Panneaux en Bois',
     website: 'https://mpbs.com.tn',
-    logo: '/images/ui/logo-mpbs.png',
+    logo: '/images/mpbs/logo/logo_mpbs.png',
     color: '#1565C0',
     description: 'Co-fondateur du Groupe MPBS, spécialiste des panneaux mélaminés, acryliques et High Gloss.',
     collections: ['Mélaminé', 'Acrylique', 'High Gloss', 'Plaqué'],
