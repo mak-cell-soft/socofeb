@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T18:21:56.407Z",
+  "updatedAt": "2026-09-19T18:34:29.878Z",
   "enterprises": {
     "starwood": {
       "id": "starwood",
@@ -484,10 +484,10 @@
       "decorsCount": 5,
       "decors": [
         {
-          "filename": "CACHELIR-2905.jpg",
-          "name": "CACHELIR",
+          "filename": "CACHEMIR-2905.jpg",
+          "name": "CACHEMIR",
           "ref": "2905",
-          "src": "/images/mpbs/decors/CACHELIR-2905.jpg",
+          "src": "/images/mpbs/decors/CACHEMIR-2905.jpg",
           "ext": "jpg",
           "supplier": "mpbs"
         },
