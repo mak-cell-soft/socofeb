@@ -2,12 +2,13 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import manifestData from '@/lib/decors-manifest.json';
+import { extractDecorReference, extractDecorName } from '@/lib/decors';
+import { SUPPLIERS } from '@/types/image';
 
 // In dev mode, re-scan public/images directly so any newly added file appears immediately
 function scanLiveDecors() {
-  const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif']);
+  const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.jfif']);
   const LOGO_EXTENSIONS = new Set(['.png', '.svg', '.webp', '.jpg', '.jpeg']);
-  const SUPPLIERS = ['starwood', 'stibois', 'propann', 'mpbs'];
   const publicDir = path.join(process.cwd(), 'public', 'images');
 
   const enterprises: Record<string, any> = {};
@@ -46,9 +47,13 @@ function scanLiveDecors() {
         for (const file of files) {
           const ext = path.extname(file).toLowerCase();
           if (IMAGE_EXTENSIONS.has(ext)) {
+            const cleanName = extractDecorName(file);
+            const ref = extractDecorReference(file);
+
             decors.push({
               filename: file,
-              name: path.basename(file, ext),
+              name: cleanName || path.basename(file, ext),
+              ref: ref,
               src: `/images/${supplier}/decors/${file}`,
               ext: ext.slice(1),
               supplier,

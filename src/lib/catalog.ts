@@ -98,7 +98,7 @@ export const PRODUCT_CATEGORIES: ProductCategoryGroup[] = [
         specs: { densite: '760 kg/m³', classe: 'E1', surface: 'Mélamine 0.3mm' },
         epaisseurs: [8, 12, 15, 16, 18, 22],
         formats: ['2440×1220', '2800×2070'],
-        suppliers: ['stibois', 'mpbs', 'propann', 'starwood'],
+        suppliers: ['stibois', 'mpbs', 'propann', 'starwood', 'panelia', 'venni', 'agt'],
         decors: true,
         imagePath: '/images/stibois/mdf-stratifie/',
         coverImage: 'mdf-stratifie-cover.webp',
@@ -111,7 +111,7 @@ export const PRODUCT_CATEGORIES: ProductCategoryGroup[] = [
         specs: { finition: 'Laque UV ultra-brillante', densite: '760 kg/m³', classe: 'E1' },
         epaisseurs: [18],
         formats: ['2440×1220'],
-        suppliers: ['stibois', 'mpbs'],
+        suppliers: ['stibois', 'mpbs', 'agt', 'panelia'],
         decors: true,
         imagePath: '/images/stibois/mdf-high-gloss/',
         coverImage: 'mdf-high-gloss-cover.webp',
@@ -222,6 +222,39 @@ export const SUPPLIER_CONFIG: SupplierConfigMap = {
     promoFolder: '/images/starwood/promo/',
     badgeText: 'Importation Directe'
   },
+  panelia: {
+    name: 'Panelia',
+    fullName: 'Panelia – Panneaux Décoratifs',
+    website: 'https://panelia.tn',
+    logo: '/images/panelia/logo/logo.webp',
+    color: '#0284C7',
+    description: 'Fabricant innovant de panneaux décoratifs modernes, surfaces laquées et textures contemporaines.',
+    collections: ['Série Ligne', 'Surfaces Laquées', 'Finitions Mat'],
+    promoFolder: '/images/panelia/promo/',
+    badgeText: 'Partenaire Décoration'
+  },
+  venni: {
+    name: 'Venni',
+    fullName: 'Venni – Surfaces & Agencement',
+    website: 'https://venni.tn',
+    logo: '/images/venni/logo/venni-logo.png',
+    color: '#D97706',
+    description: 'Créateur de surfaces décoratives contemporaines pour l\'agencement intérieur haut de gamme.',
+    collections: ['Surfaces Contemporaines', 'Panneaux Design'],
+    promoFolder: '/images/venni/promo/',
+    badgeText: 'Partenaire Design'
+  },
+  agt: {
+    name: 'AGT',
+    fullName: 'AGT – Advanced Technology in Wood Industry',
+    website: 'https://www.agt.com.tr',
+    logo: '/images/agt/logo/agt-logo.svg',
+    color: '#DC2626',
+    description: 'Leader mondial des panneaux MDF haute technologie, profils décoratifs et revêtements haut de gamme.',
+    collections: ['High Gloss', 'Soft Touch', 'MDF-Lam', 'Profilés'],
+    promoFolder: '/images/agt/promo/',
+    badgeText: 'Importation Directe'
+  },
 };
 
 export const COMPANY_INFO = {
@@ -260,8 +293,8 @@ export const COMPANY_INFO = {
   ],
   stats: [
     { value: '25+', label: 'Années d\'expertise', sub: 'dans le négoce de bois' },
-    { value: '150+', label: 'Décors & Références', sub: 'MDF & Essences nobles' },
-    { value: '4', label: 'Marques Leaders', sub: 'Partenaires industriels' },
+    { value: '180+', label: 'Décors & Références', sub: 'MDF & Essences nobles' },
+    { value: '7', label: 'Marques Leaders', sub: 'Partenaires industriels' },
     { value: '2', label: 'Dépôts à l\'Ariana', sub: 'Pour vous servir au quotidien' }
   ]
 };

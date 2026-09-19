@@ -8,9 +8,59 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '..');
 
-const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif']);
+const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.jfif']);
 const LOGO_EXTENSIONS = new Set(['.png', '.svg', '.webp', '.jpg', '.jpeg']);
-const SUPPLIERS = ['starwood', 'stibois', 'propann', 'mpbs'];
+const SUPPLIERS = ['starwood', 'stibois', 'propann', 'mpbs', 'panelia', 'venni', 'agt'];
+
+/**
+ * Dynamically extracts product reference code from filename
+ */
+function extractDecorReference(filename) {
+  if (!filename || typeof filename !== 'string') return null;
+  const base = path.basename(filename);
+  const withoutExt = base.replace(/\.[^/.]+$/, '').trim();
+
+  const lastDashIndex = withoutExt.lastIndexOf('-');
+  if (lastDashIndex !== -1) {
+    let segment = withoutExt.slice(lastDashIndex + 1).trim();
+    segment = segment.replace(/(jpg|jpeg|png|webp|avif|jfif)$/i, '').trim();
+    if (/^\d+$/.test(segment)) return segment;
+    if (/^[A-Za-z0-9]+$/.test(segment) && /\d/.test(segment)) return segment;
+  }
+
+  const spaceMatch = withoutExt.match(/\s+(\d+)$/);
+  if (spaceMatch) return spaceMatch[1];
+
+  return null;
+}
+
+/**
+ * Dynamically extracts clean title from filename
+ */
+function extractDecorName(filename) {
+  if (!filename || typeof filename !== 'string') return '';
+  const base = path.basename(filename);
+  let name = base.replace(/\.[^/.]+$/, '').trim();
+
+  const ref = extractDecorReference(filename);
+  if (ref) {
+    const trailingPattern = new RegExp(`[-_\\s]+${ref}(jpg|jpeg|png|webp|avif|jfif)?$`, 'i');
+    if (trailingPattern.test(name)) {
+      name = name.replace(trailingPattern, '').trim();
+    }
+  }
+
+  if (name.includes('-') && !name.includes(' ')) {
+    name = name
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  } else {
+    name = name.replace(/[-_]+/g, ' ').trim();
+  }
+
+  return name;
+}
 
 export function scanDecorsAndLogos() {
   const publicDir = path.join(projectRoot, 'public', 'images');
@@ -58,10 +108,13 @@ export function scanDecorsAndLogos() {
         for (const file of files) {
           const ext = path.extname(file).toLowerCase();
           if (IMAGE_EXTENSIONS.has(ext)) {
-            const name = path.basename(file, ext);
+            const cleanName = extractDecorName(file);
+            const ref = extractDecorReference(file);
+
             decors.push({
               filename: file,
-              name: name,
+              name: cleanName || path.basename(file, ext),
+              ref: ref,
               src: `/images/${supplier}/decors/${file}`,
               ext: ext.slice(1),
               supplier: supplier,

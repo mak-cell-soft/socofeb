@@ -5,7 +5,7 @@ import { Breadcrumb } from '@/components/shared/Breadcrumb';
 import { PromoCard } from '@/components/ui/PromoCard';
 import { PROMO_IMAGES } from '@/lib/images';
 import { SUPPLIER_CONFIG } from '@/lib/catalog';
-import { Supplier, PromoImage } from '@/types/image';
+import { Supplier, SUPPLIERS, PromoImage } from '@/types/image';
 import { Tag, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -13,7 +13,7 @@ export default function PromotionsPage() {
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | 'all'>('all');
 
   const allPromos: { supplier: Supplier; promo: PromoImage }[] = [];
-  (['stibois', 'mpbs', 'propann', 'starwood'] as Supplier[]).forEach((sup) => {
+  SUPPLIERS.forEach((sup) => {
     (PROMO_IMAGES[sup] || []).forEach((promo) => {
       allPromos.push({ supplier: sup, promo });
     });
@@ -55,7 +55,7 @@ export default function PromotionsPage() {
           >
             Toutes les marques ({allPromos.length})
           </button>
-          {(['stibois', 'mpbs', 'propann', 'starwood'] as Supplier[]).map((sup) => {
+          {SUPPLIERS.filter((sup) => (PROMO_IMAGES[sup] || []).length > 0).map((sup) => {
             const config = SUPPLIER_CONFIG[sup];
             const isSelected = selectedSupplier === sup;
             const count = (PROMO_IMAGES[sup] || []).length;

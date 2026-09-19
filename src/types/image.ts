@@ -1,4 +1,4 @@
-export const SUPPLIERS = ['stibois', 'mpbs', 'propann', 'starwood'] as const;
+export const SUPPLIERS = ['stibois', 'mpbs', 'propann', 'starwood', 'panelia', 'venni', 'agt'] as const;
 export type Supplier = typeof SUPPLIERS[number];
 
 export interface MDFDecorImage {

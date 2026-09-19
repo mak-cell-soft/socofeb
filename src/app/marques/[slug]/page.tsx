@@ -9,7 +9,7 @@ import { ProductCard } from '@/components/ui/ProductCard';
 import { PromoCard } from '@/components/ui/PromoCard';
 import { SUPPLIER_CONFIG, PRODUCT_CATEGORIES } from '@/lib/catalog';
 import { PROMO_IMAGES } from '@/lib/images';
-import { Supplier } from '@/types/image';
+import { Supplier, SUPPLIERS } from '@/types/image';
 import { MDFProduct } from '@/types/product';
 import { ExternalLink, CheckCircle, Tag, Layers, ArrowRight } from 'lucide-react';
 
@@ -20,7 +20,7 @@ interface Props {
 }
 
 export function generateStaticParams() {
-  return ['stibois', 'mpbs', 'propann', 'starwood'].map((slug) => ({
+  return SUPPLIERS.map((slug) => ({
     slug,
   }));
 }

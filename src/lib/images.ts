@@ -1,11 +1,11 @@
 // src/lib/images.ts
 // Source unique de vérité pour tous les chemins d'images
 
-import { Supplier, MDFCategory, MDFDecorImage, PromoImage } from '@/types/image';
+import { SUPPLIERS, Supplier, MDFCategory, MDFDecorImage, PromoImage } from '@/types/image';
 
 export const IMG_BASE = '/images';
 
-export const SUPPLIERS = ['stibois', 'mpbs', 'propann', 'starwood'] as const;
+export { SUPPLIERS };
 
 // Builder de chemin image
 export function getImagePath(
@@ -26,7 +26,8 @@ import decorsManifest from './decors-manifest.json';
 // Dynamic Decors & Enterprise Logos Types
 export interface DynamicDecorItem {
   filename: string;
-  name: string; // derived from filename without extension
+  name: string; // derived from filename without extension or clean title
+  ref?: string | null; // dynamically extracted numeric reference code
   src: string;  // browser URL /images/{supplier}/decors/{filename}
   ext: string;
   supplier: Supplier;
@@ -221,6 +222,9 @@ export const MDF_CATALOG: Record<Supplier, MDFCategory[]> = {
       subfolder: 'stratifie',
     },
   ],
+  panelia: [],
+  venni: [],
+  agt: [],
 };
 
 // Promotions par fournisseur
@@ -238,4 +242,7 @@ export const PROMO_IMAGES: Record<Supplier, PromoImage[]> = {
   starwood: [
     { file: 'promo-decors-import.webp',   label: 'Décors Import en Promo',  discount: '-12%', supplier: 'starwood', description: 'Collection exclusive importée de Turquie' },
   ],
+  panelia: [],
+  venni: [],
+  agt: [],
 };

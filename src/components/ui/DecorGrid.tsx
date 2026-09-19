@@ -5,17 +5,19 @@
  * 
  * Dynamic Decor Image Gallery with Enterprise Logos:
  * - Scans and renders decor images directly from each enterprise's `decors/` folder
- * - Extracts decor titles dynamically from the image filename (without extension)
+ * - Extracts decor references dynamically from the image filename (last numeric segment after '-')
+ * - Displays only the decor reference as an elegant badge on the image bottom-right [111]
  * - Associates each decor with its enterprise logo from the `logo/` folder
- * - Structures decors by enterprise with dedicated enterprise headers and grids
- * - Responsive grid (2-col mobile, 3-col sm, 4-col md, 5-col lg, 6-col xl)
- * - Supports instant client-side search, brand filtering, and fullscreen HD lightbox
+ * - Supports all 7 providers (Starwood, Stibois, Propann, MPBS, Panelia, Venni, AGT)
+ * - Compact, horizontally scrollable provider navigation
+ * - Showroom-grade cards with subtle zoom, consistent aspect ratio, and full-screen HD Lightbox
  */
 
 import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Eye, Sparkles, Layers, RefreshCw, X, ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { Search, Eye, Sparkles, Layers, X, ArrowUpRight, MessageSquare } from 'lucide-react';
 import { SUPPLIER_CONFIG } from '@/lib/catalog';
 import {
   MDF_CATALOG,
@@ -24,22 +26,23 @@ import {
   DynamicDecorItem,
   EnterpriseDecorsData,
 } from '@/lib/images';
-import { Supplier, MDFCategory } from '@/types/image';
+import { extractDecorReference, extractDecorName } from '@/lib/decors';
+import { Supplier, SUPPLIERS, MDFCategory } from '@/types/image';
 import { ImageLightbox, LightboxImageItem } from './ImageLightbox';
 import { cn } from '@/lib/utils';
 
 // Unified Decor Card Item
 export interface UnifiedDecorItem {
   id: string;
-  name: string;          // Filename without extension (e.g. "AFRIQUE 327", "327")
-  filename: string;      // Full filename (e.g. "AFRIQUE 327.jpg")
+  name: string;          // Clean decor title (e.g. "AFRIQUE", "Chêne Français")
+  filename: string;      // Full filename (e.g. "AFRIQUE-327.jpg")
   src: string;           // Browser-ready image path
-  supplier: Supplier;    // Enterprise ID ('starwood', 'stibois', etc.)
+  supplier: Supplier;    // Enterprise ID ('starwood', 'panelia', 'agt', etc.)
   supplierName: string;  // Human-readable enterprise name
   supplierLogo: string;  // Path to enterprise logo
   supplierColor: string; // Brand accent color
   collection?: string;   // Optional category/collection name
-  ref?: string;          // Product reference code
+  ref?: string | null;   // Dynamically extracted reference code (e.g. "327", "111", "SL10")
 }
 
 interface DecorGridProps {
@@ -56,7 +59,7 @@ export function DecorGrid({
   initialCategory,
   showFilters = true,
   title = 'Nuancier & Galerie des Décors MDF',
-  subtitle = 'Explorez notre sélection complète de décors bois, textures minérales et finitions importées',
+  subtitle = 'Explorez notre sélection complète de décors bois, textures minérales et finitions contemporaines certifiées',
   className,
 }: DecorGridProps) {
   // Brand filter state
@@ -65,7 +68,7 @@ export function DecorGrid({
   );
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Live dynamic manifest state (synced with /api/decors on mount for hot dev additions)
+  // Live dynamic manifest state (synced with /api/decors on mount for hot additions)
   const [liveManifest, setLiveManifest] = useState<Record<string, EnterpriseDecorsData>>(
     DYNAMIC_DECORS_MANIFEST
   );
@@ -103,14 +106,13 @@ export function DecorGrid({
   }, [initialSupplier]);
 
   /**
-   * Build unified decor items for each enterprise:
+   * Build unified decor items for each enterprise across all 7 suppliers:
    * 1. Prioritize images dynamically scanned from public/images/{enterprise}/decors/
-   * 2. Derive the decor title directly from the filename (omitting extension)
+   * 2. Derive reference and clean name dynamically using extractDecorReference / extractDecorName
    * 3. Attach the enterprise's logo from public/images/{enterprise}/logo/
-   * 4. If an enterprise has no decors/ folder yet, include existing catalog items as fallback
+   * 4. Fallback to catalog config if decors folder is pending
    */
   const enterpriseGroups = useMemo(() => {
-    const suppliers: Supplier[] = ['starwood', 'stibois', 'propann', 'mpbs'];
     const groups: {
       supplier: Supplier;
       config: (typeof SUPPLIER_CONFIG)[Supplier];
@@ -118,19 +120,21 @@ export function DecorGrid({
       decors: UnifiedDecorItem[];
     }[] = [];
 
-    suppliers.forEach((sup) => {
+    SUPPLIERS.forEach((sup) => {
       const config = SUPPLIER_CONFIG[sup];
       const manifestEntry = liveManifest[sup];
-      // Resolve enterprise logo from manifest first, then fallback to catalog config
       const enterpriseLogo = manifestEntry?.logo || getEnterpriseLogo(sup) || config?.logo;
       const decorsList: UnifiedDecorItem[] = [];
 
       // Check if enterprise has dynamically discovered images in decors/
       if (manifestEntry && manifestEntry.decors && manifestEntry.decors.length > 0) {
-        manifestEntry.decors.forEach((item: DynamicDecorItem, idx: number) => {
+        manifestEntry.decors.forEach((item: DynamicDecorItem) => {
+          const ref = item.ref !== undefined ? item.ref : extractDecorReference(item.filename);
+          const name = item.name ? extractDecorName(item.name) : extractDecorName(item.filename);
+
           decorsList.push({
             id: `${sup}-${item.filename}`,
-            name: item.name, // e.g., "AFRIQUE 327" from "AFRIQUE 327.jpg"
+            name: name || item.filename.replace(/\.[^/.]+$/, ''),
             filename: item.filename,
             src: item.src,
             supplier: sup,
@@ -138,19 +142,20 @@ export function DecorGrid({
             supplierLogo: enterpriseLogo,
             supplierColor: config?.color || '#4A2C0A',
             collection: 'Collection Décors',
-            ref: `${sup.toUpperCase().slice(0, 2)}-${String(idx + 1).padStart(3, '0')}`,
+            ref: ref,
           });
         });
       } else {
         // Fallback: If no files in decors/ yet, preserve existing catalog decors for this brand
         const catalogCategories: MDFCategory[] = MDF_CATALOG[sup] || [];
         catalogCategories.forEach((cat) => {
-          cat.images.forEach((img, idx) => {
-            // Remove file extension to derive label if needed
-            const derivedName = img.label || img.file.replace(/\.[^/.]+$/, '');
+          cat.images.forEach((img) => {
+            const ref = img.ref || extractDecorReference(img.file);
+            const name = img.label || extractDecorName(img.file);
+
             decorsList.push({
               id: `${sup}-${cat.id}-${img.file}`,
-              name: derivedName,
+              name: name,
               filename: img.file,
               src: `/images/${sup}/${cat.subfolder}/${img.file}`,
               supplier: sup,
@@ -158,21 +163,18 @@ export function DecorGrid({
               supplierLogo: enterpriseLogo,
               supplierColor: config?.color || '#4A2C0A',
               collection: cat.label,
-              ref: img.ref || `${sup.toUpperCase().slice(0, 2)}-${String(idx + 1).padStart(3, '0')}`,
+              ref: ref,
             });
           });
         });
       }
 
-      // Only push groups that have decors available
-      if (decorsList.length > 0) {
-        groups.push({
-          supplier: sup,
-          config,
-          logo: enterpriseLogo,
-          decors: decorsList,
-        });
-      }
+      groups.push({
+        supplier: sup,
+        config,
+        logo: enterpriseLogo,
+        decors: decorsList,
+      });
     });
 
     return groups;
@@ -206,7 +208,12 @@ export function DecorGrid({
           decors: matchingDecors,
         };
       })
-      .filter((group) => group.decors.length > 0);
+      .filter((group) => {
+        // If "all" is selected, only show groups with decors matching the search
+        // If a specific supplier is selected, always keep the group so we can render an empty state if needed
+        if (selectedSupplier !== 'all') return true;
+        return group.decors.length > 0;
+      });
   }, [enterpriseGroups, selectedSupplier, searchTerm]);
 
   // Flatten all displayed decors for the Lightbox sequence
@@ -219,7 +226,7 @@ export function DecorGrid({
     return allFilteredDecors.map((d) => ({
       src: d.src,
       label: d.name,
-      ref: d.ref,
+      ref: d.ref ? `Réf. ${d.ref}` : undefined,
       supplier: d.supplierName,
       collection: d.collection,
     }));
@@ -237,10 +244,10 @@ export function DecorGrid({
   const totalDecorsCount = allFilteredDecors.length;
 
   return (
-    <section className={cn('py-12 bg-[#F9F6F0] relative overflow-hidden', className)}>
-      {/* Decorative subtle background accents */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+    <section id="nuancier" className={cn('py-16 bg-[#FAF6EE] relative overflow-hidden', className)}>
+      {/* Subtle architectural ambient background blur */}
+      <div className="absolute top-0 right-0 w-[30rem] h-[30rem] bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
@@ -254,39 +261,49 @@ export function DecorGrid({
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-primary tracking-tight">
             {title}
           </h2>
-          <p className="text-charcoal-light text-base sm:text-lg mt-3 font-normal">
+          <p className="text-charcoal-light text-base sm:text-lg mt-3 font-normal max-w-2xl mx-auto">
             {subtitle}
           </p>
         </div>
 
-        {/* Filter and Search Bar */}
+        {/* Compact, Streamlined Filter and Search Bar */}
         {showFilters && (
-          <div className="bg-white rounded-2xl shadow-card p-4 sm:p-6 mb-10 border border-wood-border">
-            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-              {/* Supplier Selection Tabs */}
-              <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
+          <div className="bg-white rounded-2xl shadow-card p-3 sm:p-5 mb-8 border border-wood-border">
+            <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+              {/* Supplier Selection Tabs — Horizontally Scrollable & Compact */}
+              <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none snap-x">
                 <button
                   type="button"
                   onClick={() => setSelectedSupplier('all')}
                   className={cn(
-                    'px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5',
+                    'px-3.5 py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 snap-start',
                     selectedSupplier === 'all'
                       ? 'bg-primary text-white shadow-md'
                       : 'bg-wood-cream/70 text-charcoal hover:bg-wood-border/60'
                   )}
                 >
                   <Layers className="w-3.5 h-3.5" />
-                  Tous les fabricants
+                  <span>Tous</span>
+                  <span
+                    className={cn(
+                      'px-1.5 py-0.5 rounded-full text-[10px] font-mono leading-none',
+                      selectedSupplier === 'all'
+                        ? 'bg-white/25 text-white'
+                        : 'bg-gray-200/80 text-gray-700'
+                    )}
+                  >
+                    {enterpriseGroups.reduce((acc, g) => acc + g.decors.length, 0)}
+                  </span>
                 </button>
 
-                {(['starwood', 'stibois', 'propann', 'mpbs'] as Supplier[]).map((sup) => {
+                {SUPPLIERS.map((sup) => {
                   const cfg = SUPPLIER_CONFIG[sup];
                   const manifestEntry = liveManifest[sup];
                   const isSelected = selectedSupplier === sup;
                   const count =
-                    manifestEntry?.decorsCount ||
-                    enterpriseGroups.find((g) => g.supplier === sup)?.decors.length ||
-                    0;
+                    manifestEntry?.decorsCount !== undefined
+                      ? manifestEntry.decorsCount
+                      : enterpriseGroups.find((g) => g.supplier === sup)?.decors.length || 0;
 
                   return (
                     <button
@@ -294,7 +311,7 @@ export function DecorGrid({
                       type="button"
                       onClick={() => setSelectedSupplier(sup)}
                       className={cn(
-                        'px-3.5 py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-2 border',
+                        'px-3 py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-2 border snap-start',
                         isSelected
                           ? 'text-white shadow-md'
                           : 'bg-wood-cream/70 text-charcoal hover:bg-wood-border/60 border-transparent'
@@ -305,7 +322,7 @@ export function DecorGrid({
                       }}
                     >
                       <span
-                        className="w-2 h-2 rounded-full ring-2 ring-white/50"
+                        className="w-2 h-2 rounded-full shrink-0"
                         style={{
                           backgroundColor: isSelected ? '#FFFFFF' : cfg?.color || '#4A2C0A',
                         }}
@@ -327,11 +344,11 @@ export function DecorGrid({
               </div>
 
               {/* Real-time Search Input */}
-              <div className="relative min-w-[260px] sm:w-72">
+              <div className="relative min-w-[240px] sm:w-72 shrink-0">
                 <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="Rechercher par nom (ex: 327, chêne)..."
+                  placeholder="Rechercher (ex: 327, chêne, 6022)..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-9 py-2 text-xs rounded-xl border border-gray-200 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 bg-gray-50/70 text-charcoal placeholder:text-gray-400 font-medium transition-all"
@@ -351,7 +368,7 @@ export function DecorGrid({
           </div>
         )}
 
-        {/* Total Decors Counter Summary */}
+        {/* Counter Summary */}
         <div className="flex items-center justify-between mb-8 px-1">
           <div className="text-xs sm:text-sm font-semibold text-charcoal flex items-center gap-2">
             <span className="text-accent font-extrabold text-base sm:text-lg">
@@ -361,8 +378,7 @@ export function DecorGrid({
               décors répertoriés
               {selectedSupplier !== 'all' && (
                 <>
-                  {' '}
-                  pour la marque{' '}
+                  {' '}pour{' '}
                   <strong className="text-primary font-bold">
                     {SUPPLIER_CONFIG[selectedSupplier]?.name}
                   </strong>
@@ -370,65 +386,102 @@ export function DecorGrid({
               )}
               {searchTerm && (
                 <>
-                  {' '}
-                  correspondant à &ldquo;<span className="text-primary">{searchTerm}</span>&rdquo;
+                  {' '}correspondant à &ldquo;<span className="text-primary">{searchTerm}</span>&rdquo;
                 </>
               )}
             </span>
           </div>
 
-          <span className="text-xs text-charcoal-light hidden sm:inline-flex items-center gap-1.5">
+          <span className="text-xs text-charcoal-light hidden sm:inline-flex items-center gap-1.5 font-medium">
             <Eye className="w-3.5 h-3.5 text-accent" />
-            Cliquez sur un décor pour l&apos;afficher en haute définition
+            Cliquez sur un panneau pour zoomer en haute définition
           </span>
         </div>
 
         {/* Empty State when no items match filters */}
-        {filteredGroups.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-gray-300 shadow-sm p-8">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-wood-cream flex items-center justify-center text-accent mb-4">
-              <Search className="w-7 h-7" />
+        {filteredGroups.length === 0 || totalDecorsCount === 0 ? (
+          selectedSupplier !== 'all' && enterpriseGroups.find(g => g.supplier === selectedSupplier)?.decors.length === 0 ? (
+            /* Graceful notice when a provider has no images uploaded yet (e.g. Venni) */
+            <div className="text-center py-16 bg-white rounded-3xl border border-wood-border p-8 max-w-xl mx-auto shadow-card">
+              <div className="relative w-28 h-14 mx-auto mb-4 bg-wood-cream/50 rounded-2xl p-2 border border-wood-border flex items-center justify-center overflow-hidden">
+                <Image
+                  src={SUPPLIER_CONFIG[selectedSupplier]?.logo || getEnterpriseLogo(selectedSupplier)}
+                  alt={SUPPLIER_CONFIG[selectedSupplier]?.name || selectedSupplier}
+                  fill
+                  className="object-contain p-2"
+                />
+              </div>
+              <h3 className="font-heading text-2xl font-bold text-primary mb-2">
+                Collection {SUPPLIER_CONFIG[selectedSupplier]?.name}
+              </h3>
+              <p className="text-charcoal-light text-xs sm:text-sm leading-relaxed mb-6">
+                Le nuancier numérique des décors <strong>{SUPPLIER_CONFIG[selectedSupplier]?.name}</strong> est en cours d&apos;actualisation photographique. Nos panneaux et dérivés de cette marque sont d&apos;ores et déjà disponibles en stock direct dans nos dépôts d&apos;Ariana.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <Link
+                  href="/contact"
+                  className="px-5 py-2.5 bg-accent hover:bg-accent-hover text-wood-dark text-xs font-bold rounded-xl uppercase tracking-wider transition-all shadow-sm flex items-center gap-2"
+                >
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  Demander le catalogue {SUPPLIER_CONFIG[selectedSupplier]?.name}
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setSelectedSupplier('all')}
+                  className="px-4 py-2.5 bg-wood-cream hover:bg-wood-border text-primary text-xs font-bold rounded-xl transition-all"
+                >
+                  Voir tous les fabricants
+                </button>
+              </div>
             </div>
-            <h3 className="font-heading text-xl font-bold text-primary mb-2">
-              Aucun décor trouvé
-            </h3>
-            <p className="text-gray-500 text-sm max-w-md mx-auto mb-6">
-              Aucun décor ne correspond à votre recherche. Essayez de réinitialiser vos filtres ou de modifier votre terme de recherche.
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                setSelectedSupplier('all');
-                setSearchTerm('');
-              }}
-              className="px-5 py-2.5 bg-accent hover:bg-accent/90 text-wood-dark text-xs font-bold rounded-xl uppercase tracking-wider transition-colors shadow-sm"
-            >
-              Réinitialiser les filtres
-            </button>
-          </div>
+          ) : (
+            /* Standard search empty state */
+            <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-gray-300 shadow-sm p-8">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-wood-cream flex items-center justify-center text-accent mb-4">
+                <Search className="w-7 h-7" />
+              </div>
+              <h3 className="font-heading text-xl font-bold text-primary mb-2">
+                Aucun décor trouvé
+              </h3>
+              <p className="text-gray-500 text-sm max-w-md mx-auto mb-6">
+                Aucun décor ne correspond à votre recherche. Essayez de réinitialiser vos filtres ou de chercher un numéro de référence (ex: 327, 111, 6022).
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedSupplier('all');
+                  setSearchTerm('');
+                }}
+                className="px-5 py-2.5 bg-accent hover:bg-accent-hover text-wood-dark text-xs font-bold rounded-xl uppercase tracking-wider transition-colors shadow-sm"
+              >
+                Réinitialiser la recherche
+              </button>
+            </div>
+          )
         ) : (
-          /* Enterprise-Grouped Layout */
-          <div className="space-y-14">
+          /* Enterprise-Grouped Showcase Layout */
+          <div className="space-y-12">
             {filteredGroups.map((group) => {
               const { supplier, config, logo, decors } = group;
+              if (decors.length === 0) return null;
 
               return (
                 <div
                   key={supplier}
                   id={`enterprise-${supplier}`}
-                  className="bg-white rounded-3xl p-6 sm:p-8 border border-wood-border shadow-card hover:shadow-card-hover transition-all duration-300"
+                  className="bg-white rounded-3xl p-5 sm:p-8 border border-wood-border shadow-card hover:shadow-card-hover transition-all duration-300"
                 >
-                  {/* Enterprise Header with Official Logo and Description */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 mb-6 border-b border-gray-100">
+                  {/* Enterprise Header with Logo, Name, and Quick Link */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pb-6 mb-6 border-b border-gray-100">
                     <div className="flex items-center gap-4 sm:gap-5">
-                      {/* Enterprise Logo Display */}
-                      <div className="relative w-24 h-14 sm:w-32 sm:h-16 shrink-0 bg-white rounded-2xl p-2.5 border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden">
+                      {/* Brand Logo Box */}
+                      <div className="relative w-24 h-14 sm:w-28 sm:h-16 shrink-0 bg-white rounded-2xl p-2 border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden">
                         <Image
                           src={logo}
                           alt={`Logo ${config?.name || supplier}`}
                           fill
                           className="object-contain p-1.5"
-                          sizes="128px"
+                          sizes="112px"
                         />
                       </div>
 
@@ -452,9 +505,9 @@ export function DecorGrid({
                       </div>
                     </div>
 
-                    {/* Enterprise Counter Pill & Website Link */}
-                    <div className="flex items-center gap-3 shrink-0">
-                      <span className="text-xs font-bold text-charcoal bg-wood-cream/80 border border-wood-border px-3.5 py-1.5 rounded-xl flex items-center gap-1.5">
+                    {/* Counter Pill & Link */}
+                    <div className="flex items-center gap-3 shrink-0 self-end sm:self-auto">
+                      <span className="text-xs font-bold text-charcoal bg-wood-cream/80 border border-wood-border px-3 py-1.5 rounded-xl flex items-center gap-1.5">
                         <span
                           className="w-2 h-2 rounded-full"
                           style={{ backgroundColor: config?.color || '#4A2C0A' }}
@@ -468,7 +521,7 @@ export function DecorGrid({
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-xs text-charcoal-light hover:text-accent font-medium inline-flex items-center gap-1 transition-colors p-1"
-                          title={`Visiter le site officiel de ${config.name}`}
+                          title={`Site officiel de ${config.name}`}
                         >
                           <span className="hidden md:inline">Site officiel</span>
                           <ArrowUpRight className="w-3.5 h-3.5" />
@@ -477,62 +530,71 @@ export function DecorGrid({
                     </div>
                   </div>
 
-                  {/* Decor Cards Gallery Grid: 2 cols mobile, 3 cols sm, 4 cols md, 5 cols lg, 6 cols xl */}
+                  {/* 
+                    Showroom Decor Cards Grid
+                    2 cols on mobile, 3 cols sm, 4 cols md, 5 cols lg, 6 cols xl
+                  */}
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-4 lg:gap-5">
                     {decors.map((decor) => (
                       <motion.div
                         key={decor.id}
-                        whileHover={{ y: -5, scale: 1.02 }}
-                        transition={{ duration: 0.25, ease: 'easeOut' }}
+                        whileHover={{ y: -4 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
                         onClick={() => handleTileClick(decor)}
-                        className="group relative flex flex-col rounded-2xl overflow-hidden cursor-pointer bg-white border border-wood-border/70 hover:border-accent shadow-xs hover:shadow-xl transition-all duration-300"
+                        className="group relative flex flex-col rounded-2xl overflow-hidden cursor-pointer bg-white border border-wood-border/80 hover:border-accent/60 shadow-xs hover:shadow-xl transition-all duration-300"
                       >
                         {/* Decor Image Container with consistent aspect ratio */}
-                        <div className="relative w-full aspect-square overflow-hidden bg-gray-100">
+                        <div className="relative w-full aspect-[4/3] overflow-hidden bg-neutral-100">
                           <Image
                             src={decor.src}
                             alt={decor.name}
                             fill
                             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
-                            className="object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
+                            loading="lazy"
+                            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                           />
 
-                          {/* Subtle Brand Logo Pill in Top Corner */}
-                          <div className="absolute top-2 left-2 bg-white/95 backdrop-blur-md rounded-lg px-2 py-1 shadow-sm border border-black/5 opacity-90 group-hover:opacity-100 transition-opacity">
-                            <span
-                              className="text-[9px] font-extrabold uppercase tracking-wider block leading-none"
-                              style={{ color: decor.supplierColor }}
-                            >
-                              {decor.supplierName}
-                            </span>
-                          </div>
+                          {/* 
+                            RULE: ONLY the decor reference should be displayed as a badge.
+                            Positioned bottom-right of the image container [111].
+                            Small, elegant, readable, visually integrated.
+                          */}
+                          {decor.ref && (
+                            <div className="absolute bottom-2 right-2 z-10 pointer-events-none">
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md border border-white/20 text-[11px] font-mono font-bold tracking-wider text-white shadow-sm">
+                                {decor.ref}
+                              </span>
+                            </div>
+                          )}
 
-                          {/* Hover Overlay with Fullscreen Preview Cue */}
-                          <div className="absolute inset-0 bg-primary/80 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-250 flex flex-col justify-between p-3 text-center text-white">
+                          {/* Subtle Restrained Hover Overlay with Preview Cue */}
+                          <div className="absolute inset-0 bg-[#241508]/75 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-between p-2.5 text-center text-white">
                             <div className="flex justify-end">
-                              <span className="p-1 rounded-lg bg-accent/20 text-accent">
-                                <Eye className="w-4 h-4" />
+                              <span className="p-1 rounded-md bg-accent/20 text-accent border border-accent/30">
+                                <Eye className="w-3.5 h-3.5" />
                               </span>
                             </div>
 
-                            <div className="py-2">
-                              <p className="font-heading font-bold text-sm sm:text-base text-white line-clamp-2 leading-tight">
+                            <div className="py-1">
+                              <p className="font-heading font-bold text-xs sm:text-sm text-white line-clamp-2 leading-tight">
                                 {decor.name}
                               </p>
                               {decor.ref && (
-                                <p className="text-[10px] font-mono text-accent mt-1 tracking-wider">
-                                  {decor.ref}
+                                <p className="text-[10px] font-mono text-accent mt-0.5 tracking-wider font-semibold">
+                                  Réf. {decor.ref}
                                 </p>
                               )}
                             </div>
 
-                            <span className="text-[10px] font-bold text-wood-dark uppercase tracking-wider bg-accent/90 hover:bg-accent py-1.5 px-2 rounded-lg shadow-xs">
-                              Aperçu HD
-                            </span>
+                            <div className="flex justify-center">
+                              <span className="text-[9px] font-bold text-wood-dark uppercase tracking-wider bg-accent hover:bg-accent-hover py-1 px-2 rounded-md shadow-xs">
+                                Aperçu HD
+                              </span>
+                            </div>
                           </div>
                         </div>
 
-                        {/* Decor Info Bar (Name derived from filename without extension) */}
+                        {/* Minimalist Decor Info Bar */}
                         <div className="p-3 bg-white flex flex-col justify-between flex-1 border-t border-gray-100">
                           <h4
                             className="font-heading font-semibold text-xs sm:text-sm text-primary group-hover:text-accent transition-colors leading-tight line-clamp-1"
@@ -541,9 +603,9 @@ export function DecorGrid({
                             {decor.name}
                           </h4>
 
-                          <div className="flex items-center justify-between mt-1.5 pt-1.5 border-t border-gray-50">
-                            <span className="text-[10px] font-mono text-charcoal-light/70 truncate">
-                              {decor.ref || decor.supplierName}
+                          <div className="flex items-center justify-between mt-1 pt-1">
+                            <span className="text-[10px] text-charcoal-light/70 truncate font-medium">
+                              {decor.supplierName}
                             </span>
                             <span className="text-[9px] font-bold uppercase tracking-wider text-accent group-hover:translate-x-0.5 transition-transform">
                               HD &rarr;
@@ -560,7 +622,7 @@ export function DecorGrid({
         )}
       </div>
 
-      {/* Lightbox Viewer Component */}
+      {/* Fullscreen Lightbox Viewer Component */}
       <ImageLightbox
         images={lightboxItems}
         initialIndex={lightboxIndex}

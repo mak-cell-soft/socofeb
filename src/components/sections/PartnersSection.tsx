@@ -18,15 +18,15 @@ export function PartnersSection() {
             Partenaires d&apos;Élite
           </span>
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mt-3 mb-4">
-            Les 4 Leaders Industriels du Marché
+            Nos Fabricants &amp; Marques Partenaires
           </h2>
           <p className="text-charcoal-light text-sm sm:text-base">
             SOCOFEB distribue en direct d&apos;usine les marques les plus fiables de Tunisie et d&apos;Europe, garantissant traçabilité, régularité des approvisionnements et conformité aux normes internationales.
           </p>
         </div>
 
-        {/* 4 Partners Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Partners Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {(Object.entries(SUPPLIER_CONFIG) as [Supplier, typeof SUPPLIER_CONFIG[Supplier]][]).map(
             ([slug, sup], idx) => (
               <motion.div

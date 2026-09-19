@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { PRODUCT_CATEGORIES } from '@/lib/catalog';
+import { SUPPLIERS } from '@/types/image';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.socofeb.tn';
@@ -96,7 +97,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   });
 
   // Add individual brands
-  ['stibois', 'mpbs', 'propann', 'starwood'].forEach((brand) => {
+  SUPPLIERS.forEach((brand) => {
     routes.push({
       url: `${baseUrl}/marques/${brand}`,
       lastModified: new Date(),

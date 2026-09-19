@@ -1,6 +1,7 @@
 import React from 'react';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { StatsSection } from '@/components/sections/StatsSection';
+import { DecorGrid } from '@/components/ui/DecorGrid';
 import { ProductsSection } from '@/components/sections/ProductsSection';
 import { PartnersSection } from '@/components/sections/PartnersSection';
 import { PromoSection } from '@/components/sections/PromoSection';
@@ -12,6 +13,10 @@ export default function HomePage() {
     <>
       <HeroSection />
       <StatsSection />
+      <DecorGrid
+        title="Nuancier &amp; Galerie des Décors"
+        subtitle="Sélectionnez une marque pour explorer nos teintes bois, textures minérales et finitions contemporaines en stock permanent"
+      />
       <ProductsSection />
       <PartnersSection />
       <PromoSection />

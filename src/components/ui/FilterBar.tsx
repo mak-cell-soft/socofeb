@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Supplier } from '@/types/image';
+import { Supplier, SUPPLIERS } from '@/types/image';
 import { SUPPLIER_CONFIG } from '@/lib/catalog';
 import { cn } from '@/lib/utils';
 import { RotateCcw } from 'lucide-react';
@@ -49,7 +49,7 @@ export function FilterBar({
           <span className="text-xs font-bold text-charcoal uppercase tracking-wider">
             Fabricants :
           </span>
-          {(['stibois', 'mpbs', 'propann', 'starwood'] as Supplier[]).map((sup) => {
+          {SUPPLIERS.map((sup) => {
             const config = SUPPLIER_CONFIG[sup];
             const isActive = selectedSuppliers.includes(sup);
             return (
