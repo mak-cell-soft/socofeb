@@ -6,10 +6,19 @@
  * - Graceful handling: returns null if no valid reference (never undefined, NaN, or broken strings)
  * - Support for common extensions (.jpg, .jpeg, .png, .webp, .avif, .jfif)
  * - Clean decor name derivation
+ * - Canonical decor URL and Alt-text generation
+ * - Provider & Reference search/lookup utilities
  */
+
+import { Supplier, SUPPLIERS } from '@/types/image';
+import { SUPPLIER_CONFIG } from '@/lib/catalog';
+import { DYNAMIC_DECORS_MANIFEST, DynamicDecorItem, getDynamicDecors } from '@/lib/images';
 
 /**
  * Extracts the product reference code from an image filename.
+ * 
+ * Rule: Reference = final numeric segment after the final '-' before the file extension.
+ * Also accommodates alphanumeric codes containing digits (e.g. SL10 for Panelia).
  * 
  * Examples:
  * - "some-decor-name-111.jpg" -> "111"
@@ -97,4 +106,105 @@ export function extractDecorName(filename: string): string {
   }
 
   return name;
+}
+
+/**
+ * Generates the crawlable relative URL for an individual decor page.
+ * Returns null if no valid reference code exists to prevent broken links.
+ */
+export function getDecorUrl(supplier: string, ref?: string | null): string | null {
+  if (!ref || typeof ref !== 'string' || !ref.trim()) {
+    return null;
+  }
+  return `/decors/${supplier.toLowerCase().trim()}/${encodeURIComponent(ref.trim())}`;
+}
+
+/**
+ * Generates descriptive, SEO-optimized image alt text.
+ * Rule: Provider + decor name + reference (without keyword stuffing).
+ */
+export function getDecorAltText(
+  supplierName: string,
+  decorName?: string,
+  ref?: string | null
+): string {
+  const parts = ['Panneau décoratif', supplierName];
+  if (decorName && decorName.trim()) {
+    parts.push(decorName.trim());
+  }
+  if (ref && ref.trim()) {
+    parts.push(`référence ${ref.trim()}`);
+  }
+  return parts.join(' ');
+}
+
+/**
+ * Finds a specific decor from the dynamic manifest matching provider and reference.
+ * Supports exact match, case-insensitive match, and numeric code variations.
+ */
+export function findDecorByRef(
+  supplier: string,
+  ref: string
+): DynamicDecorItem | null {
+  const normalizedSupplier = supplier.toLowerCase().trim() as Supplier;
+  const decors = getDynamicDecors(normalizedSupplier);
+  if (!decors || decors.length === 0) return null;
+
+  const targetRef = ref.toLowerCase().trim();
+
+  // 1. Try exact ref match
+  let found = decors.find(
+    (d) => d.ref && d.ref.toLowerCase() === targetRef
+  );
+  if (found) return found;
+
+  // 2. Try matching reference directly from filename
+  found = decors.find((d) => {
+    const extracted = extractDecorReference(d.filename);
+    return extracted && extracted.toLowerCase() === targetRef;
+  });
+  if (found) return found;
+
+  // 3. Try matching digits-only if target is pure digits (e.g. '10' for 'SL10')
+  const digitsOnly = targetRef.replace(/\D+/g, '');
+  if (digitsOnly) {
+    found = decors.find((d) => {
+      const dRef = d.ref || extractDecorReference(d.filename);
+      if (!dRef) return false;
+      return dRef.replace(/\D+/g, '') === digitsOnly;
+    });
+    if (found) return found;
+  }
+
+  return null;
+}
+
+/**
+ * Returns all indexable decors across all suppliers that have a valid reference code.
+ * Used by generateStaticParams and dynamic sitemap.
+ */
+export function getAllIndexableDecors(): {
+  supplier: Supplier;
+  ref: string;
+  decor: DynamicDecorItem;
+}[] {
+  const results: { supplier: Supplier; ref: string; decor: DynamicDecorItem }[] = [];
+  const seen = new Set<string>();
+
+  for (const s of SUPPLIERS) {
+    const list = getDynamicDecors(s);
+    for (const item of list) {
+      const ref = item.ref || extractDecorReference(item.filename);
+      if (ref && !seen.has(`${s}-${ref.toLowerCase()}`)) {
+        seen.add(`${s}-${ref.toLowerCase()}`);
+        results.push({
+          supplier: s,
+          ref: ref,
+          decor: item,
+        });
+      }
+    }
+  }
+
+  return results;
 }

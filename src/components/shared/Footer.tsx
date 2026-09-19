@@ -110,7 +110,7 @@ export function Footer() {
               {Object.entries(SUPPLIER_CONFIG).map(([slug, sup]) => (
                 <li key={slug}>
                   <Link
-                    href={`/marques/${slug}`}
+                    href={`/providers/${slug}`}
                     className="group flex items-center justify-between text-gray-300 hover:text-white transition-colors"
                   >
                     <span className="flex items-center gap-2">
@@ -200,7 +200,7 @@ export function Footer() {
             Tous droits réservés.
           </p>
           <div className="flex items-center gap-6 text-[11px]">
-            <span>www.socofeb.tn</span>
+            <span>www.socofeb-decor.com</span>
             <span>Ariana, Tunisie</span>
           </div>
         </div>

@@ -162,7 +162,7 @@ export function Navbar() {
               )}
             </div>
 
-            {/* Marques Dropdown */}
+            {/* Marques / Fournisseurs Dropdown */}
             <div
               className="relative"
               onMouseEnter={() => setBrandsOpen(true)}
@@ -171,12 +171,12 @@ export function Navbar() {
               <button
                 className={cn(
                   'flex items-center gap-1 px-3.5 py-2 rounded-lg text-xs xl:text-sm font-semibold transition-colors',
-                  pathname.startsWith('/marques')
+                  (pathname.startsWith('/providers') || pathname.startsWith('/marques'))
                     ? 'text-accent bg-white/10'
                     : 'text-white/90 hover:text-accent hover:bg-white/5'
                 )}
               >
-                Marques
+                Fournisseurs
                 <ChevronDown className="w-3.5 h-3.5" />
               </button>
 
@@ -186,7 +186,7 @@ export function Navbar() {
                     {Object.entries(SUPPLIER_CONFIG).map(([slug, sup]) => (
                       <Link
                         key={slug}
-                        href={`/marques/${slug}`}
+                        href={`/providers/${slug}`}
                         className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/10 transition-colors group/item"
                       >
                         <span
@@ -206,10 +206,10 @@ export function Navbar() {
                   </div>
                   <div className="mt-2 pt-2 border-t border-white/10">
                     <Link
-                      href="/marques"
+                      href="/providers"
                       className="block text-center text-xs font-bold text-accent hover:underline py-1"
                     >
-                      Tous nos partenaires industriels &rarr;
+                      Tous nos fournisseurs de panneaux &rarr;
                     </Link>
                   </div>
                 </div>
@@ -323,13 +323,13 @@ export function Navbar() {
 
           <div className="py-2 border-b border-white/5">
             <span className="text-xs font-bold text-accent uppercase tracking-wider block mb-2">
-              Marques Partenaires
+              Fournisseurs de Panneaux
             </span>
             <div className="grid grid-cols-2 gap-2 pl-2">
               {Object.entries(SUPPLIER_CONFIG).map(([slug, sup]) => (
                 <Link
                   key={slug}
-                  href={`/marques/${slug}`}
+                  href={`/providers/${slug}`}
                   className="text-xs text-gray-200 hover:text-accent py-1 block"
                 >
                   {sup.name}

@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-19T18:34:29.878Z",
+  "updatedAt": "2026-09-19T20:01:36.032Z",
   "enterprises": {
     "starwood": {
       "id": "starwood",
       "logo": "/images/starwood/logo/logo_starwood.png",
-      "decorsCount": 41,
+      "decorsCount": 38,
       "decors": [
         {
           "filename": "AFRIQUE-327.jpg",
@@ -36,14 +36,6 @@
           "ref": "300",
           "src": "/images/starwood/decors/BENDİR-300.jpg",
           "ext": "jpg",
-          "supplier": "starwood"
-        },
-        {
-          "filename": "beton-cire-anthracite.webp",
-          "name": "Beton Cire Anthracite",
-          "ref": null,
-          "src": "/images/starwood/decors/beton-cire-anthracite.webp",
-          "ext": "webp",
           "supplier": "starwood"
         },
         {
@@ -183,14 +175,6 @@
           "supplier": "starwood"
         },
         {
-          "filename": "marbre-calacatta.webp",
-          "name": "Marbre Calacatta",
-          "ref": null,
-          "src": "/images/starwood/decors/marbre-calacatta.webp",
-          "ext": "webp",
-          "supplier": "starwood"
-        },
-        {
           "filename": "MERCAN-122.jpg",
           "name": "MERCAN",
           "ref": "122",
@@ -220,14 +204,6 @@
           "ref": "293",
           "src": "/images/starwood/decors/PANIER-293.jpg",
           "ext": "jpg",
-          "supplier": "starwood"
-        },
-        {
-          "filename": "parquet-chene.webp",
-          "name": "Parquet Chene",
-          "ref": null,
-          "src": "/images/starwood/decors/parquet-chene.webp",
-          "ext": "webp",
           "supplier": "starwood"
         },
         {

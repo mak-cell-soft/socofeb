@@ -1,11 +1,13 @@
 import { MetadataRoute } from 'next';
+import { SITE_ORIGIN } from '@/lib/seo';
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
       allow: '/',
+      disallow: ['/api/'],
     },
-    sitemap: 'https://www.socofeb.vercel.app/sitemap.xml',
+    sitemap: `${SITE_ORIGIN}/sitemap.xml`,
   };
 }

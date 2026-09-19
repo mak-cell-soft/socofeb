@@ -1,7 +1,7 @@
 # AGENTS.md — SOCOFEB Architecture & Guidelines
 
 ## 🪵 Project Overview
-Institution & Catalogue website for **SOCOFEB** (Société Commerciale du Fer et du Bois) — www.socofeb.tn.
+Institution & Catalogue website for **SOCOFEB** (Société Commerciale du Fer et du Bois) — www.socofeb-decor.com.
 Specialist in solid wood (Chêne, Hêtre, Bois Rouge, Bois Blanc, Acajou) and wood-derived panels (MDF, Contreplaqué, OSB).
 
 ## 📍 Locations & Contact

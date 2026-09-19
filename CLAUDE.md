@@ -1,7 +1,7 @@
 # CLAUDE.md — SOCOFEB Project Instructions
 
 ## Project
-Site web institutionnel SOCOFEB (www.socofeb.tn)
+Site web institutionnel SOCOFEB (www.socofeb-decor.com)
 Stack : Next.js 14, TypeScript, Tailwind CSS, Zustand, Framer Motion
 
 ## Critical Rules

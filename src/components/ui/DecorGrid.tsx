@@ -26,7 +26,7 @@ import {
   DynamicDecorItem,
   EnterpriseDecorsData,
 } from '@/lib/images';
-import { extractDecorReference, extractDecorName } from '@/lib/decors';
+import { extractDecorReference, extractDecorName, getDecorUrl, getDecorAltText } from '@/lib/decors';
 import { Supplier, SUPPLIERS, MDFCategory } from '@/types/image';
 import { ImageLightbox, LightboxImageItem } from './ImageLightbox';
 import { cn } from '@/lib/utils';
@@ -473,7 +473,11 @@ export function DecorGrid({
                 >
                   {/* Enterprise Header with Logo, Name, and Quick Link */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pb-6 mb-6 border-b border-gray-100">
-                    <div className="flex items-center gap-4 sm:gap-5">
+                    <Link
+                      href={`/providers/${supplier}`}
+                      className="group/brand flex items-center gap-4 sm:gap-5 transition-opacity hover:opacity-95"
+                      title={`Découvrir tous les panneaux et décors ${config?.name || supplier}`}
+                    >
                       {/* Brand Logo Box */}
                       <div className="relative w-24 h-14 sm:w-28 sm:h-16 shrink-0 bg-white rounded-2xl p-2 border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden">
                         <Image
@@ -487,7 +491,7 @@ export function DecorGrid({
 
                       <div>
                         <div className="flex items-center gap-2.5 flex-wrap">
-                          <h3 className="font-heading text-2xl sm:text-3xl font-bold text-primary">
+                          <h3 className="font-heading text-2xl sm:text-3xl font-bold text-primary group-hover/brand:text-accent transition-colors">
                             {config?.name || supplier.toUpperCase()}
                           </h3>
                           {config?.badgeText && (
@@ -503,10 +507,17 @@ export function DecorGrid({
                           {config?.description}
                         </p>
                       </div>
-                    </div>
+                    </Link>
 
-                    {/* Counter Pill & Link */}
-                    <div className="flex items-center gap-3 shrink-0 self-end sm:self-auto">
+                    {/* Counter Pill & Links */}
+                    <div className="flex items-center gap-3 shrink-0 self-end sm:self-auto flex-wrap">
+                      <Link
+                        href={`/providers/${supplier}`}
+                        className="text-xs font-bold text-accent hover:underline flex items-center gap-1 bg-wood-cream/60 px-3 py-1.5 rounded-xl border border-wood-border"
+                      >
+                        Catalogue {config?.name || supplier} &rarr;
+                      </Link>
+
                       <span className="text-xs font-bold text-charcoal bg-wood-cream/80 border border-wood-border px-3 py-1.5 rounded-xl flex items-center gap-1.5">
                         <span
                           className="w-2 h-2 rounded-full"
@@ -535,85 +546,125 @@ export function DecorGrid({
                     2 cols on mobile, 3 cols sm, 4 cols md, 5 cols lg, 6 cols xl
                   */}
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-4 lg:gap-5">
-                    {decors.map((decor) => (
-                      <motion.div
-                        key={decor.id}
-                        whileHover={{ y: -4 }}
-                        transition={{ duration: 0.2, ease: 'easeOut' }}
-                        onClick={() => handleTileClick(decor)}
-                        className="group relative flex flex-col rounded-2xl overflow-hidden cursor-pointer bg-white border border-wood-border/80 hover:border-accent/60 shadow-xs hover:shadow-xl transition-all duration-300"
-                      >
-                        {/* Decor Image Container with consistent aspect ratio */}
-                        <div className="relative w-full aspect-[4/3] overflow-hidden bg-neutral-100">
-                          <Image
-                            src={decor.src}
-                            alt={decor.name}
-                            fill
-                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
-                            loading="lazy"
-                            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                          />
+                    {decors.map((decor) => {
+                      const decorUrl = getDecorUrl(decor.supplier, decor.ref);
+                      const altText = getDecorAltText(decor.supplierName, decor.name, decor.ref);
 
-                          {/* 
-                            RULE: ONLY the decor reference should be displayed as a badge.
-                            Positioned bottom-right of the image container [111].
-                            Small, elegant, readable, visually integrated.
-                          */}
-                          {decor.ref && (
-                            <div className="absolute bottom-2 right-2 z-10 pointer-events-none">
-                              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md border border-white/20 text-[11px] font-mono font-bold tracking-wider text-white shadow-sm">
-                                {decor.ref}
-                              </span>
-                            </div>
-                          )}
+                      const cardInner = (
+                        <>
+                          {/* Decor Image Container with consistent aspect ratio */}
+                          <div className="relative w-full aspect-[4/3] overflow-hidden bg-neutral-100">
+                            <Image
+                              src={decor.src}
+                              alt={altText}
+                              fill
+                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+                              loading="lazy"
+                              className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                            />
 
-                          {/* Subtle Restrained Hover Overlay with Preview Cue */}
-                          <div className="absolute inset-0 bg-[#241508]/75 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-between p-2.5 text-center text-white">
-                            <div className="flex justify-end">
-                              <span className="p-1 rounded-md bg-accent/20 text-accent border border-accent/30">
-                                <Eye className="w-3.5 h-3.5" />
-                              </span>
-                            </div>
+                            {/* 
+                              RULE: ONLY the decor reference should be displayed as a badge.
+                              Positioned bottom-right of the image container [111].
+                              Small, elegant, readable, visually integrated.
+                            */}
+                            {decor.ref && (
+                              <div className="absolute bottom-2 right-2 z-10 pointer-events-none">
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md border border-white/20 text-[11px] font-mono font-bold tracking-wider text-white shadow-sm">
+                                  {decor.ref}
+                                </span>
+                              </div>
+                            )}
 
-                            <div className="py-1">
-                              <p className="font-heading font-bold text-xs sm:text-sm text-white line-clamp-2 leading-tight">
-                                {decor.name}
-                              </p>
-                              {decor.ref && (
-                                <p className="text-[10px] font-mono text-accent mt-0.5 tracking-wider font-semibold">
-                                  Réf. {decor.ref}
+                            {/* Subtle Restrained Hover Overlay with Preview Cue */}
+                            <div className="absolute inset-0 bg-[#241508]/75 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-between p-2.5 text-center text-white">
+                              <div className="flex justify-end">
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleTileClick(decor);
+                                  }}
+                                  aria-label="Aperçu grand écran"
+                                  className="p-1 rounded-md bg-accent/20 text-accent border border-accent/30 hover:bg-accent/30 transition-colors"
+                                  title="Agrandir en plein écran"
+                                >
+                                  <Eye className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+
+                              <div className="py-1">
+                                <p className="font-heading font-bold text-xs sm:text-sm text-white line-clamp-2 leading-tight">
+                                  {decor.name}
                                 </p>
-                              )}
-                            </div>
+                                {decor.ref && (
+                                  <p className="text-[10px] font-mono text-accent mt-0.5 tracking-wider font-semibold">
+                                    Réf. {decor.ref}
+                                  </p>
+                                )}
+                              </div>
 
-                            <div className="flex justify-center">
-                              <span className="text-[9px] font-bold text-wood-dark uppercase tracking-wider bg-accent hover:bg-accent-hover py-1 px-2 rounded-md shadow-xs">
-                                Aperçu HD
+                              <div className="flex justify-center">
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleTileClick(decor);
+                                  }}
+                                  className="text-[9px] font-bold text-wood-dark uppercase tracking-wider bg-accent hover:bg-accent-hover py-1 px-2 rounded-md shadow-xs transition-colors"
+                                >
+                                  Aperçu HD
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Minimalist Decor Info Bar */}
+                          <div className="p-3 bg-white flex flex-col justify-between flex-1 border-t border-gray-100">
+                            <h4
+                              className="font-heading font-semibold text-xs sm:text-sm text-primary group-hover:text-accent transition-colors leading-tight line-clamp-1"
+                              title={decor.name}
+                            >
+                              {decor.name}
+                            </h4>
+
+                            <div className="flex items-center justify-between mt-1 pt-1">
+                              <span className="text-[10px] text-charcoal-light/70 truncate font-medium">
+                                {decor.supplierName}
+                              </span>
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-accent group-hover:translate-x-0.5 transition-transform">
+                                {decorUrl ? 'Fiche →' : 'HD →'}
                               </span>
                             </div>
                           </div>
-                        </div>
+                        </>
+                      );
 
-                        {/* Minimalist Decor Info Bar */}
-                        <div className="p-3 bg-white flex flex-col justify-between flex-1 border-t border-gray-100">
-                          <h4
-                            className="font-heading font-semibold text-xs sm:text-sm text-primary group-hover:text-accent transition-colors leading-tight line-clamp-1"
-                            title={decor.name}
+                      if (decorUrl) {
+                        return (
+                          <Link
+                            key={decor.id}
+                            href={decorUrl}
+                            title={`Consulter la fiche détaillée du panneau ${decor.name} ${decor.ref ? `(Réf. ${decor.ref})` : ''}`}
+                            className="group relative flex flex-col rounded-2xl overflow-hidden bg-white border border-wood-border/80 hover:border-accent/60 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                           >
-                            {decor.name}
-                          </h4>
+                            {cardInner}
+                          </Link>
+                        );
+                      }
 
-                          <div className="flex items-center justify-between mt-1 pt-1">
-                            <span className="text-[10px] text-charcoal-light/70 truncate font-medium">
-                              {decor.supplierName}
-                            </span>
-                            <span className="text-[9px] font-bold uppercase tracking-wider text-accent group-hover:translate-x-0.5 transition-transform">
-                              HD &rarr;
-                            </span>
-                          </div>
+                      return (
+                        <div
+                          key={decor.id}
+                          onClick={() => handleTileClick(decor)}
+                          className="group relative flex flex-col rounded-2xl overflow-hidden cursor-pointer bg-white border border-wood-border/80 hover:border-accent/60 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                        >
+                          {cardInner}
                         </div>
-                      </motion.div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               );
