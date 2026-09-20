@@ -58,9 +58,17 @@ export const metadata: Metadata = {
     images: [`${SITE_ORIGIN}/images/hero/hero-wood-workshop.webp`],
   },
   icons: {
-    icon: '/images/ui/favicon.ico',
-    shortcut: '/images/ui/favicon.ico',
-    apple: '/images/ui/favicon.ico',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
 };
 
