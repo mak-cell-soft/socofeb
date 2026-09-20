@@ -26,39 +26,29 @@ import { motion } from 'framer-motion';
 // Complete OSB image gallery from public/images/osb/
 const OSB_GALLERY_IMAGES: GalleryImage[] = [
   {
-    src: '/images/osb/osb-cover.webp',
+    src: '/images/osb/osb2.jpg',
     label: 'Panneau OSB/3 Structurel Haute Résistance',
     ref: 'OSB-3-PANNEAU',
   },
   {
     src: '/images/osb/osb1.jpg',
-    label: 'Stockage Palettes & Conditionnement Usine',
-    ref: 'OSB-3-STOCK',
-  },
-  {
-    src: '/images/osb/osb2.jpg',
-    label: 'Structure Plancher & Support Sous-Toiture',
-    ref: 'OSB-3-STRUCTURE',
-  },
-  {
-    src: '/images/osb/osb3-panneau.webp',
     label: 'Texture Lamelles Orientées Croisées (Classe 3)',
     ref: 'OSB-3-TEXTURE',
   },
   {
-    src: '/images/osb/osb3.jpg',
-    label: 'Pose Murale & Contreventement Ossature Bois',
-    ref: 'OSB-3-OSSATURE',
-  },
-  {
     src: '/images/osb/osb4.jpg',
-    label: 'Calibrage & Usinage des Rives',
-    ref: 'OSB-3-USINAGE',
+    label: 'Épaisseurs Calibrées (9 à 25 mm) & Rives Usinées',
+    ref: 'OSB-3-EPAISSEURS',
   },
   {
     src: '/images/osb/osb5.jpg',
-    label: 'Coffrage & Emballage Industriel Résistant',
-    ref: 'OSB-3-COFFRAGE',
+    label: 'Panneau Plein Format Industriel 2500×1250 mm',
+    ref: 'OSB-3-FORMAT',
+  },
+  {
+    src: '/images/osb/osb3.jpg',
+    label: 'Aménagement Intérieur & Mobilier Design Industriel',
+    ref: 'OSB-3-DESIGN',
   },
 ];
 
@@ -81,23 +71,23 @@ const OSB_APPLICATIONS = [
   {
     title: 'Contreventement Ossature Bois',
     category: 'Murs Porteurs',
-    src: '/images/osb/osb3.jpg',
+    src: '/images/osb/osb1.jpg',
     description:
       'Rigidification parasismique des façades et cloisons en construction bois. Stabilité dimensionnelle et étanchéité à l’air éprouvée.',
   },
   {
-    title: 'Stockage & Palettes Chantier',
-    category: 'Logistique & Dépôt',
-    src: '/images/osb/osb1.jpg',
-    description:
-      'Approvisionnement direct par palettes cerclées et protégées. Disponibilité permanente en gros et demi-gros à nos 2 dépôts.',
-  },
-  {
-    title: 'Coffrage & Emballage Industriel',
+    title: 'Panneau Plein Format Industriel',
     category: 'Industrie & Chantier',
     src: '/images/osb/osb5.jpg',
     description:
-      'Panneaux réutilisables pour coffrages béton soignés, caisses de transport lourd et aménagements d’ateliers robustes.',
+      'Panneaux bruts en palettes complètes pour coffrages béton soignés, emballages lourds et cloisons de chantier robustes.',
+  },
+  {
+    title: 'Aménagement & Mobilier Design',
+    category: 'Architecture Intérieure',
+    src: '/images/osb/osb3.jpg',
+    description:
+      'Plans de travail, comptoirs d’accueil, habillages muraux et agencements contemporains au cachet industriel chaleureux.',
   },
 ];
 
