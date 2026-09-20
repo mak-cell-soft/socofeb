@@ -5,13 +5,25 @@ import Image from 'next/image';
 import type { Metadata } from 'next';
 import { Breadcrumb } from '@/components/shared/Breadcrumb';
 import { DecorGrid } from '@/components/ui/DecorGrid';
-import { ProductCard } from '@/components/ui/ProductCard';
 import { PromoCard } from '@/components/ui/PromoCard';
-import { SUPPLIER_CONFIG, PRODUCT_CATEGORIES } from '@/lib/catalog';
+import { SUPPLIER_CONFIG, COMPANY_INFO } from '@/lib/catalog';
 import { PROMO_IMAGES, getDynamicDecors } from '@/lib/images';
 import { Supplier, SUPPLIERS } from '@/types/image';
-import { MDFProduct } from '@/types/product';
-import { ExternalLink, CheckCircle, Tag, Layers, ArrowLeft, ArrowRight, ShieldCheck } from 'lucide-react';
+import {
+  ExternalLink,
+  CheckCircle,
+  Tag,
+  Layers,
+  ArrowLeft,
+  ArrowRight,
+  ShieldCheck,
+  Ruler,
+  Scissors,
+  Warehouse,
+  Phone,
+  MessageSquare,
+  Sparkles,
+} from 'lucide-react';
 import { constructMetadata, getBreadcrumbJsonLd, SITE_ORIGIN } from '@/lib/seo';
 import { extractDecorReference, extractDecorName, getDecorUrl, getDecorAltText } from '@/lib/decors';
 
@@ -50,12 +62,6 @@ export default function ProviderDetailPage({ params }: Props) {
   const supplier = SUPPLIER_CONFIG[slug];
 
   if (!supplier) notFound();
-
-  // Find all products associated with this provider in catalog
-  const mdfCat = PRODUCT_CATEGORIES.find((c) => c.id === 'mdf');
-  const supplierProducts = (mdfCat?.products || []).filter((p) =>
-    (p as MDFProduct).suppliers?.includes(slug)
-  );
 
   const promos = PROMO_IMAGES[slug] || [];
   const decors = getDynamicDecors(slug);
@@ -235,26 +241,131 @@ export default function ProviderDetailPage({ params }: Props) {
           </div>
         )}
 
-        {/* Supplier Products in Catalog */}
-        {supplierProducts.length > 0 && (
-          <div className="mb-16">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="font-heading text-2xl font-bold text-primary">
-                Produits {supplier.name} en Stock ({supplierProducts.length})
+        {/* SOCOFEB Services, Formats & Stock Reassurance for this Supplier */}
+        <div className="mb-16 bg-white rounded-3xl p-8 sm:p-10 border border-wood-border shadow-card">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-gray-100">
+            <div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-wood-cream text-secondary border border-wood-border mb-3">
+                <ShieldCheck className="w-3.5 h-3.5 text-accent" />
+                Distribution &amp; Stock Officiel SOCOFEB
+              </span>
+              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-primary">
+                Disponibilité &amp; Services Sur-Mesure {supplier.name}
               </h2>
+              <p className="text-xs sm:text-sm text-charcoal-light mt-1.5 max-w-2xl leading-relaxed">
+                Retrouvez l&apos;intégralité des panneaux {supplier.name} disponibles directement à nos dépôts de Jâafer et Sidi Amor (Ariana), avec services de découpe et plaquage de chants coordonnés.
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {supplierProducts.map((p) => (
-                <ProductCard
-                  key={p.id}
-                  product={p}
-                  categorySlug="/produits/mdf"
-                />
-              ))}
+            <div className="flex items-center gap-3 shrink-0">
+              <a
+                href={`https://wa.me/21699218866?text=${encodeURIComponent(`Bonjour SOCOFEB, je souhaite obtenir un devis pour les panneaux ${supplier.name}.`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
+              >
+                <MessageSquare className="w-4 h-4" />
+                Devis WhatsApp
+              </a>
+              <a
+                href="tel:+21699218866"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-primary hover:bg-secondary text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
+              >
+                <Phone className="w-4 h-4" />
+                Appel Direct
+              </a>
             </div>
           </div>
-        )}
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8">
+            {/* Feature 1: Formats & Dimensions */}
+            <div className="p-6 rounded-2xl bg-wood-cream/50 border border-wood-border/80 flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-white border border-wood-border flex items-center justify-center text-accent mb-4 shadow-2xs">
+                  <Ruler className="w-5 h-5" />
+                </div>
+                <h3 className="font-heading font-bold text-base text-primary mb-2">
+                  Formats &amp; Épaisseurs
+                </h3>
+                <p className="text-xs text-charcoal-light leading-relaxed mb-4">
+                  Panneaux calibrés haute performance pour agencements résidentiels et chantiers professionnels.
+                </p>
+              </div>
+              <ul className="space-y-2 text-xs text-charcoal font-medium">
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  <span><strong>Dimensions :</strong> 2800×2070 mm &amp; 2440×1220 mm</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  <span><strong>Épaisseurs :</strong> 8, 12, 16, 18, 22 et 28 mm</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  <span>Support MDF haute densité certifié E1</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Feature 2: Atelier Découpe & Chants */}
+            <div className="p-6 rounded-2xl bg-wood-cream/50 border border-wood-border/80 flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-white border border-wood-border flex items-center justify-center text-accent mb-4 shadow-2xs">
+                  <Scissors className="w-5 h-5" />
+                </div>
+                <h3 className="font-heading font-bold text-base text-primary mb-2">
+                  Découpe &amp; Chants Assortis
+                </h3>
+                <p className="text-xs text-charcoal-light leading-relaxed mb-4">
+                  Précision numérique et finition irréprochable dans nos ateliers pour vos projets sur-mesure.
+                </p>
+              </div>
+              <ul className="space-y-2 text-xs text-charcoal font-medium">
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  <span>Découpe numérique avec calepinage optimisé</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  <span>Plaquage de chants ABS coordonnés 100% au décor</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  <span>Perçage et préparation sur demande</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Feature 3: Stock Direct & Dépôts */}
+            <div className="p-6 rounded-2xl bg-wood-cream/50 border border-wood-border/80 flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-white border border-wood-border flex items-center justify-center text-accent mb-4 shadow-2xs">
+                  <Warehouse className="w-5 h-5" />
+                </div>
+                <h3 className="font-heading font-bold text-base text-primary mb-2">
+                  Stock Permanent à Ariana
+                </h3>
+                <p className="text-xs text-charcoal-light leading-relaxed mb-4">
+                  Deux dépôts stratégiques pour un enlèvement immédiat ou livraison rapide sur toute la Tunisie.
+                </p>
+              </div>
+              <ul className="space-y-2 text-xs text-charcoal font-medium">
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  <span><strong>Dépôt 1 :</strong> Route de Raoued Km 3, Jâafer</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  <span><strong>Dépôt 2 :</strong> Route de Gammarth Km 9, Sidi Amor</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  <span>Enlèvement palette ou panneau au détail</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
         {/* Interactive Nuancier Grid for this Supplier */}
         <div className="mb-16">

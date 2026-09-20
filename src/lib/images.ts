@@ -227,21 +227,12 @@ export const MDF_CATALOG: Record<Supplier, MDFCategory[]> = {
   agt: [],
 };
 
-// Promotions par fournisseur
+// Promotions par fournisseur (Actuellement aucune promotion active — Restez Connecté)
 export const PROMO_IMAGES: Record<Supplier, PromoImage[]> = {
-  stibois: [
-    { file: 'promo-mdf-juillet.webp',     label: 'Offre MDF Juillet',       discount: '-15%', supplier: 'stibois', description: 'Remise exceptionnelle sur toute la gamme Stipan Earth Line' },
-    { file: 'promo-high-gloss.webp',      label: 'High Gloss en Promo',     discount: '-20%', supplier: 'stibois', description: 'Surfaces brillantes laquées blanc et coloris exclusifs' },
-  ],
-  mpbs: [
-    { file: 'promo-melamine-ete.webp',    label: 'Mélaminés été',           discount: '-10%', supplier: 'mpbs', description: 'Sur stock disponible en épaisseurs 16mm et 18mm' },
-  ],
-  propann: [
-    { file: 'promo-mdf-brut.webp',        label: 'MDF Brut déstockage',     discount: '-25%', supplier: 'propann', description: 'Tarif direct usine pour les commandes de palettes complètes' },
-  ],
-  starwood: [
-    { file: 'promo-decors-import.webp',   label: 'Décors Import en Promo',  discount: '-12%', supplier: 'starwood', description: 'Collection exclusive importée de Turquie' },
-  ],
+  stibois: [],
+  mpbs: [],
+  propann: [],
+  starwood: [],
   panelia: [],
   venni: [],
   agt: [],
