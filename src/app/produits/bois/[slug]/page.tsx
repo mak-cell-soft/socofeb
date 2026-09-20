@@ -46,43 +46,80 @@ export default function BoisDetailPage({ params }: Props) {
 
   if (!wood) notFound();
 
-  const galleryImages: GalleryImage[] = [
-    {
-      src: `${wood.imagePath}${wood.coverImage}`,
-      label: `${wood.name} Brut`,
-      ref: `BOIS-${wood.slug.toUpperCase()}-01`,
-    },
-  ];
+  const galleryImages: GalleryImage[] = [];
 
   if (wood.slug === 'bois-blanc') {
     galleryImages.push({
-      src: '/images/bois/bois-blanc/bois-blanc-rabote.webp',
-      label: 'Bois Blanc Raboté 4 Faces',
-      ref: 'BB-002',
+      src: '/images/produits/bois/bois-blanc/bbl.jpg',
+      label: 'Bois Blanc Scandinave Brut & Raboté',
+      ref: 'BB-001',
     });
   } else if (wood.slug === 'bois-rouge') {
-    galleryImages.push({
-      src: '/images/bois/bois-rouge/bois-rouge-chevron.webp',
-      label: 'Chevrons & Madriers Bois Rouge',
-      ref: 'BR-002',
-    });
+    galleryImages.push(
+      {
+        src: '/images/produits/bois/bois-rouge/wood1.jpg',
+        label: 'Bois Rouge Séché en Séchoir (KD)',
+        ref: 'BR-001',
+      },
+      {
+        src: '/images/produits/bois/bois-rouge/wood2.jpg',
+        label: 'Chevrons & Madriers de Structure',
+        ref: 'BR-002',
+      },
+      {
+        src: '/images/produits/bois/bois-rouge/wood3.jpg',
+        label: 'Planches Avivées C24',
+        ref: 'BR-003',
+      }
+    );
   } else if (wood.slug === 'chene') {
-    galleryImages.push({
-      src: '/images/bois/chene/chene-avive.webp',
-      label: 'Plots & Avivés Chêne Noble',
-      ref: 'CH-002',
-    });
+    galleryImages.push(
+      {
+        src: '/images/produits/bois/chene/chene-cover.webp',
+        label: 'Plots & Avivés Chêne Noble',
+        ref: 'CH-001',
+      },
+      {
+        src: '/images/produits/bois/chene/chene-avive.webp',
+        label: 'Chêne Avivé 4 Faces Débité',
+        ref: 'CH-002',
+      },
+      {
+        src: '/images/produits/bois/chene/chene.jpg',
+        label: 'Grain & Veinage Massif',
+        ref: 'CH-003',
+      }
+    );
   } else if (wood.slug === 'hetre') {
     galleryImages.push({
-      src: '/images/bois/hetre/hetre-etuve.webp',
-      label: 'Plateaux de Hêtre Rosé Étuve',
-      ref: 'HT-002',
+      src: '/images/produits/bois/hetre/hetre.jpg',
+      label: 'Plateaux de Hêtre Homogène & Étuve',
+      ref: 'HT-001',
     });
   } else if (wood.slug === 'acajou') {
     galleryImages.push({
-      src: '/images/bois/acajou/acajou-precieux.webp',
-      label: 'Avivés Acajou d\'Exception',
-      ref: 'AC-002',
+      src: '/images/produits/bois/acajou/acajou-1.jpeg',
+      label: 'Bois Précieux d\'Acajou Ébénisterie',
+      ref: 'AC-001',
+    });
+  } else if (wood.slug === 'frene' || wood.slug === 'freine') {
+    galleryImages.push(
+      {
+        src: '/images/produits/bois/freine/freine-1.jpeg',
+        label: 'Plateaux de Frêne Massif Avivé',
+        ref: 'FR-001',
+      },
+      {
+        src: '/images/produits/bois/freine/freine-2.jpeg',
+        label: 'Veinage & Fil Droit Contemporain',
+        ref: 'FR-002',
+      }
+    );
+  } else {
+    galleryImages.push({
+      src: `${wood.imagePath}${wood.coverImage}`,
+      label: `${wood.name} Massif`,
+      ref: `BOIS-${wood.slug.toUpperCase()}-01`,
     });
   }
 

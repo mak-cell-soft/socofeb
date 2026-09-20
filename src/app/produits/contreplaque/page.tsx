@@ -32,7 +32,7 @@ export default function ContreplaquePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             <div className="lg:col-span-6 relative aspect-[4/3] rounded-2xl overflow-hidden bg-wood-dark border border-wood-border">
               <Image
-                src="/images/stibois/contreplaque/cp-structurel-cover.webp"
+                src="/images/produits/contreplaque/contreplaque.jpg"
                 alt="Contreplaqué Structurel SOCOFEB"
                 fill
                 priority

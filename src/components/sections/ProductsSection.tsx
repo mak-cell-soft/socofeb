@@ -10,10 +10,10 @@ import { PRODUCT_CATEGORIES } from '@/lib/catalog';
 export function ProductsSection() {
   // Category banner images mapping
   const categoryImages: Record<string, string> = {
-    'bois-massifs': '/images/bois/chene/chene-cover.webp',
+    'bois-massifs': '/images/produits/bois/chene/chene-cover.webp',
     'mdf': '/images/stibois/mdf-stratifie/mdf-stratifie-cover.webp',
-    'contreplaque': '/images/stibois/contreplaque/cp-structurel-cover.webp',
-    'osb': '/images/osb/osb-cover.webp',
+    'contreplaque': '/images/produits/contreplaque/contreplaque.jpg',
+    'osb': '/images/osb/osb2.jpg',
   };
 
   return (

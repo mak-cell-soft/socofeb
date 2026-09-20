@@ -18,8 +18,8 @@ export const PRODUCT_CATEGORIES: ProductCategoryGroup[] = [
         usages: ['Charpente', 'Emballage', 'Menuiserie courante'],
         sections: ['22×100', '27×150', '38×100', '50×150', '50×200'],
         finishes: ['Brut', 'Raboté', 'Raboté-Bouveté'],
-        imagePath: '/images/bois/bois-blanc/',
-        coverImage: 'bois-blanc-cover.webp',
+        imagePath: '/images/produits/bois/bois-blanc/',
+        coverImage: 'bbl.jpg',
         description: 'Résineux polyvalent importé du Nord et de l\'Est de l\'Europe, séché en séchoir, idéal pour tous travaux de structure et d\'agencement courant.'
       },
       {
@@ -30,8 +30,8 @@ export const PRODUCT_CATEGORIES: ProductCategoryGroup[] = [
         usages: ['Ossature bois', 'Construction', 'Charpente'],
         sections: ['38×140', '45×145', '45×195', '50×200'],
         finishes: ['Brut', 'Raboté'],
-        imagePath: '/images/bois/bois-rouge/',
-        coverImage: 'bois-rouge-cover.webp',
+        imagePath: '/images/produits/bois/bois-rouge/',
+        coverImage: 'wood1.jpg',
         description: 'Bois résistant et durable d\'une excellente stabilité mécanique, recommandé pour les structures porteuses et l\'ossature bois.'
       },
       {
@@ -42,7 +42,7 @@ export const PRODUCT_CATEGORIES: ProductCategoryGroup[] = [
         usages: ['Ameublement haut de gamme', 'Parquet massif', 'Escaliers'],
         sections: ['27×100', '27×150', '50×100', '50×200'],
         finishes: ['Brut', 'Raboté', 'Huilé'],
-        imagePath: '/images/bois/chene/',
+        imagePath: '/images/produits/bois/chene/',
         coverImage: 'chene-cover.webp',
         description: 'Le roi des bois nobles d\'Europe. Grain serré, dureté exceptionnelle et ramage majestueux pour l\'ébénisterie et l\'agencement de prestige.'
       },
@@ -54,8 +54,8 @@ export const PRODUCT_CATEGORIES: ProductCategoryGroup[] = [
         usages: ['Tournage', 'Mobilier', 'Menuiserie intérieure'],
         sections: ['27×100', '27×200', '50×100'],
         finishes: ['Brut', 'Raboté'],
-        imagePath: '/images/bois/hetre/',
-        coverImage: 'hetre-cover.webp',
+        imagePath: '/images/produits/bois/hetre/',
+        coverImage: 'hetre.jpg',
         description: 'Bois dur au grain fin et homogène de teinte rosée ou étuvée, facile à usiner et idéal pour les pièces massives et l\'ameublement contemporain.'
       },
       {
@@ -66,9 +66,21 @@ export const PRODUCT_CATEGORIES: ProductCategoryGroup[] = [
         usages: ['Ébénisterie', 'Placage décoratif', 'Mobilier prestige'],
         sections: ['27×100', '27×200', '50×150'],
         finishes: ['Brut', 'Raboté', 'Plaqué'],
-        imagePath: '/images/bois/acajou/',
-        coverImage: 'acajou-cover.webp',
+        imagePath: '/images/produits/bois/acajou/',
+        coverImage: 'acajou-1.jpeg',
         description: 'Bois précieux d\'exception au reflet acajou profond, réputé pour sa tenue millimétrique et son lustre inégalable.'
+      },
+      {
+        id: 'frene',
+        name: 'Frêne',
+        slug: 'frene',
+        essence: 'Fraxinus excelsior',
+        usages: ['Ébénisterie', 'Agencement', 'Escaliers', 'Mobilier contemporain'],
+        sections: ['27×100', '27×150', '50×100', '50×150'],
+        finishes: ['Brut', 'Raboté'],
+        imagePath: '/images/produits/bois/freine/',
+        coverImage: 'freine-1.jpeg',
+        description: 'Bois feuillu dur, souple et très résilient, à fil droit et veinage clair contrasté très prisé en architecture intérieure et design moderne.'
       },
     ],
   },
@@ -147,8 +159,8 @@ export const PRODUCT_CATEGORIES: ProductCategoryGroup[] = [
         epaisseurs: [9, 12, 15, 18, 21],
         formats: ['2440×1220'],
         suppliers: ['stibois'],
-        imagePath: '/images/stibois/contreplaque/',
-        coverImage: 'cp-structurel-cover.webp',
+        imagePath: '/images/produits/contreplaque/',
+        coverImage: 'contreplaque.jpg',
         description: 'Panneaux contreplaqués de qualité industrielle collés avec résine WBP résistante aux intempéries et aux contraintes mécaniques lourdes.'
       },
     ],
