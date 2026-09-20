@@ -52,16 +52,17 @@ export function extractDecorReference(filename: string): string | null {
       return segment;
     }
 
-    // Alphanumeric provider code containing digits (e.g. 'SL10', 'SL02', 'DC01')
-    if (/^[A-Za-z0-9]+$/.test(segment) && /\d/.test(segment)) {
-      return segment;
+    // Alphanumeric provider code containing digits with optional internal spaces
+    // (e.g. 'SL10', 'SL02', 'DC01', 'VHG 13', 'VHG 02')
+    if (/^[A-Za-z0-9]+(?:\s+[A-Za-z0-9]+)*$/.test(segment) && /\d/.test(segment)) {
+      return segment.replace(/\s+/g, ' ');
     }
   }
 
-  // 4. Graceful fallback: check if name ends with whitespace and numeric code (e.g., "Marbre Blanc 6007")
-  const spaceMatch = withoutExt.match(/\s+(\d+)$/);
-  if (spaceMatch) {
-    return spaceMatch[1];
+  // 4. Graceful fallback: check if name ends with whitespace and code (e.g., "Marbre Blanc 6007", "Marbre Blanc VHG 12")
+  const spaceAlphaMatch = withoutExt.match(/\s+([A-Za-z0-9]+(?:\s+\d+)?)$/);
+  if (spaceAlphaMatch && /\d/.test(spaceAlphaMatch[1])) {
+    return spaceAlphaMatch[1].replace(/\s+/g, ' ').trim();
   }
 
   return null;
@@ -77,6 +78,8 @@ export function extractDecorReference(filename: string): string | null {
  * - "CHENE NATUREL-396.jpg" -> "CHENE NATUREL"
  * - "Anthracite-6022.webp" -> "Anthracite"
  * - "Marbre Blanc 6007.webp" -> "Marbre Blanc"
+ * - "Galaxy Honey-VHG 13.jpg" -> "Galaxy Honey"
+ * - "Noir-VHG 02.jpg" -> "Noir"
  * - "beton-cire-anthracite.webp" -> "Béton Ciré Anthracite"
  */
 export function extractDecorName(filename: string): string {
@@ -88,7 +91,10 @@ export function extractDecorName(filename: string): string {
   // If there's an extracted reference, remove that reference from the end of the name
   const ref = extractDecorReference(filename);
   if (ref) {
-    const trailingPattern = new RegExp(`[-_\\s]+${ref}(jpg|jpeg|png|webp|avif|jfif)?$`, 'i');
+    const escapedRef = ref
+      .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      .replace(/\s+/g, '[\\s-_]+');
+    const trailingPattern = new RegExp(`[-_\\s]+${escapedRef}(jpg|jpeg|png|webp|avif|jfif)?$`, 'i');
     if (trailingPattern.test(name)) {
       name = name.replace(trailingPattern, '').trim();
     }
@@ -140,7 +146,7 @@ export function getDecorAltText(
 
 /**
  * Finds a specific decor from the dynamic manifest matching provider and reference.
- * Supports exact match, case-insensitive match, and numeric code variations.
+ * Supports exact match, case-insensitive match, normalized match (ignoring spaces/dashes), and numeric code variations.
  */
 export function findDecorByRef(
   supplier: string,
@@ -165,7 +171,17 @@ export function findDecorByRef(
   });
   if (found) return found;
 
-  // 3. Try matching digits-only if target is pure digits (e.g. '10' for 'SL10')
+  // 3. Try matching normalized (ignoring spaces, hyphens, and underscores, e.g. 'VHG 13' == 'VHG-13' == 'vhg13')
+  const normalizeRef = (r: string) => r.replace(/[\s\-_]+/g, '').toLowerCase();
+  const normalizedTarget = normalizeRef(targetRef);
+  found = decors.find((d) => {
+    const dRef = d.ref || extractDecorReference(d.filename);
+    if (!dRef) return false;
+    return normalizeRef(dRef) === normalizedTarget;
+  });
+  if (found) return found;
+
+  // 4. Try matching digits-only if target is pure digits (e.g. '10' for 'SL10')
   const digitsOnly = targetRef.replace(/\D+/g, '');
   if (digitsOnly) {
     found = decors.find((d) => {

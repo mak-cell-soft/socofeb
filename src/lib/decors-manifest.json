@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T20:01:36.032Z",
+  "updatedAt": "2026-09-20T09:58:57.829Z",
   "enterprises": {
     "starwood": {
       "id": "starwood",
@@ -504,8 +504,16 @@
     "panelia": {
       "id": "panelia",
       "logo": "/images/panelia/logo/logo.webp",
-      "decorsCount": 5,
+      "decorsCount": 9,
       "decors": [
+        {
+          "filename": "ALMAN MEŞE-AH01.jpg",
+          "name": "ALMAN MEŞE",
+          "ref": "AH01",
+          "src": "/images/panelia/decors/ALMAN MEŞE-AH01.jpg",
+          "ext": "jpg",
+          "supplier": "panelia"
+        },
         {
           "filename": "Anthracite-SL10.png",
           "name": "Anthracite",
@@ -545,14 +553,103 @@
           "src": "/images/panelia/decors/EVORA-SL03.jpg",
           "ext": "jpg",
           "supplier": "panelia"
+        },
+        {
+          "filename": "Galaxy Blan-HL01.jpg",
+          "name": "Galaxy Blan",
+          "ref": "HL01",
+          "src": "/images/panelia/decors/Galaxy Blan-HL01.jpg",
+          "ext": "jpg",
+          "supplier": "panelia"
+        },
+        {
+          "filename": "Galaxy DORE-HL03.jpg",
+          "name": "Galaxy DORE",
+          "ref": "HL03",
+          "src": "/images/panelia/decors/Galaxy DORE-HL03.jpg",
+          "ext": "jpg",
+          "supplier": "panelia"
+        },
+        {
+          "filename": "Gris FUME-SL09.jpg",
+          "name": "Gris FUME",
+          "ref": "SL09",
+          "src": "/images/panelia/decors/Gris FUME-SL09.jpg",
+          "ext": "jpg",
+          "supplier": "panelia"
         }
       ]
     },
     "venni": {
       "id": "venni",
       "logo": "/images/venni/logo/venni-logo.png",
-      "decorsCount": 0,
-      "decors": []
+      "decorsCount": 8,
+      "decors": [
+        {
+          "filename": "Cream-VHG 03.jpg",
+          "name": "Cream",
+          "ref": "VHG 03",
+          "src": "/images/venni/decors/Cream-VHG 03.jpg",
+          "ext": "jpg",
+          "supplier": "venni"
+        },
+        {
+          "filename": "Galaxy Creme-VHG 11.jpg",
+          "name": "Galaxy Creme",
+          "ref": "VHG 11",
+          "src": "/images/venni/decors/Galaxy Creme-VHG 11.jpg",
+          "ext": "jpg",
+          "supplier": "venni"
+        },
+        {
+          "filename": "Galaxy Honey-VHG 13.jpg",
+          "name": "Galaxy Honey",
+          "ref": "VHG 13",
+          "src": "/images/venni/decors/Galaxy Honey-VHG 13.jpg",
+          "ext": "jpg",
+          "supplier": "venni"
+        },
+        {
+          "filename": "Galaxy Metalic Anthracite-VHG 12.jpg",
+          "name": "Galaxy Metalic Anthracite",
+          "ref": "VHG 12",
+          "src": "/images/venni/decors/Galaxy Metalic Anthracite-VHG 12.jpg",
+          "ext": "jpg",
+          "supplier": "venni"
+        },
+        {
+          "filename": "Galaxy Metalic Grey-VHG 14.jpg",
+          "name": "Galaxy Metalic Grey",
+          "ref": "VHG 14",
+          "src": "/images/venni/decors/Galaxy Metalic Grey-VHG 14.jpg",
+          "ext": "jpg",
+          "supplier": "venni"
+        },
+        {
+          "filename": "German OAK-VHG 17.jpg",
+          "name": "German OAK",
+          "ref": "VHG 17",
+          "src": "/images/venni/decors/German OAK-VHG 17.jpg",
+          "ext": "jpg",
+          "supplier": "venni"
+        },
+        {
+          "filename": "Gris Foncé-VHG 09.jpg",
+          "name": "Gris Foncé",
+          "ref": "VHG 09",
+          "src": "/images/venni/decors/Gris Foncé-VHG 09.jpg",
+          "ext": "jpg",
+          "supplier": "venni"
+        },
+        {
+          "filename": "Noir-VHG 02.jpg",
+          "name": "Noir",
+          "ref": "VHG 02",
+          "src": "/images/venni/decors/Noir-VHG 02.jpg",
+          "ext": "jpg",
+          "supplier": "venni"
+        }
+      ]
     },
     "agt": {
       "id": "agt",
@@ -625,8 +722,8 @@
         },
         {
           "filename": "Marbre Blanc 6007.webp",
-          "name": "Marbre Blanc",
-          "ref": "6007",
+          "name": "Marbre",
+          "ref": "Blanc 6007",
           "src": "/images/agt/decors/Marbre Blanc 6007.webp",
           "ext": "webp",
           "supplier": "agt"

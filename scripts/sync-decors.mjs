@@ -25,11 +25,17 @@ function extractDecorReference(filename) {
     let segment = withoutExt.slice(lastDashIndex + 1).trim();
     segment = segment.replace(/(jpg|jpeg|png|webp|avif|jfif)$/i, '').trim();
     if (/^\d+$/.test(segment)) return segment;
-    if (/^[A-Za-z0-9]+$/.test(segment) && /\d/.test(segment)) return segment;
+    // Alphanumeric provider code containing digits with optional internal spaces (e.g. 'SL10', 'VHG 13')
+    if (/^[A-Za-z0-9]+(?:\s+[A-Za-z0-9]+)*$/.test(segment) && /\d/.test(segment)) {
+      return segment.replace(/\s+/g, ' ');
+    }
   }
 
-  const spaceMatch = withoutExt.match(/\s+(\d+)$/);
-  if (spaceMatch) return spaceMatch[1];
+  // Graceful fallback: check if name ends with whitespace and code (e.g., "Marbre Blanc 6007", "Marbre Blanc VHG 12")
+  const spaceAlphaMatch = withoutExt.match(/\s+([A-Za-z0-9]+(?:\s+\d+)?)$/);
+  if (spaceAlphaMatch && /\d/.test(spaceAlphaMatch[1])) {
+    return spaceAlphaMatch[1].replace(/\s+/g, ' ').trim();
+  }
 
   return null;
 }
@@ -44,7 +50,10 @@ function extractDecorName(filename) {
 
   const ref = extractDecorReference(filename);
   if (ref) {
-    const trailingPattern = new RegExp(`[-_\\s]+${ref}(jpg|jpeg|png|webp|avif|jfif)?$`, 'i');
+    const escapedRef = ref
+      .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      .replace(/\s+/g, '[\\s-_]+');
+    const trailingPattern = new RegExp(`[-_\\s]+${escapedRef}(jpg|jpeg|png|webp|avif|jfif)?$`, 'i');
     if (trailingPattern.test(name)) {
       name = name.replace(trailingPattern, '').trim();
     }
