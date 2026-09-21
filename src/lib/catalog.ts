@@ -320,6 +320,7 @@ export interface DepotContact {
   phone: string;
   phoneRaw: string;
   location: string;
+  depotGroup: 'Dépôt Jâafer' | 'Dépôt Sidi Amor';
   role?: string;
   isOwner?: boolean;
 }
@@ -331,7 +332,8 @@ export const DEPOT_CONTACTS: DepotContact[] = [
     phone: '+216 99 218 866',
     phoneRaw: '+21699218866',
     location: 'Dépôt Jâafer',
-    role: 'Direction',
+    depotGroup: 'Dépôt Jâafer',
+    role: 'Propriétaire',
     isOwner: true,
   },
   {
@@ -340,7 +342,8 @@ export const DEPOT_CONTACTS: DepotContact[] = [
     phone: '+216 98 360 569',
     phoneRaw: '+21698360569',
     location: 'Dépôt Jâafer',
-    role: 'Direction',
+    depotGroup: 'Dépôt Jâafer',
+    role: 'Propriétaire',
     isOwner: true,
   },
   {
@@ -349,6 +352,7 @@ export const DEPOT_CONTACTS: DepotContact[] = [
     phone: '+216 99 218 762',
     phoneRaw: '+21699218762',
     location: 'Dépôt Jâafer',
+    depotGroup: 'Dépôt Jâafer',
     isOwner: false,
   },
   {
@@ -357,6 +361,7 @@ export const DEPOT_CONTACTS: DepotContact[] = [
     phone: '+216 218 760',
     phoneRaw: '+216218760',
     location: 'Dépôt Sidi Amor',
+    depotGroup: 'Dépôt Sidi Amor',
     isOwner: false,
   },
   {
@@ -365,6 +370,7 @@ export const DEPOT_CONTACTS: DepotContact[] = [
     phone: '+216 99 218 308',
     phoneRaw: '+21699218308',
     location: 'Dépôt Sidi Amor',
+    depotGroup: 'Dépôt Sidi Amor',
     isOwner: false,
   },
 ];

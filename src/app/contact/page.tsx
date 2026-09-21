@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { Breadcrumb } from '@/components/shared/Breadcrumb';
 import { ContactForm } from '@/components/ui/ContactForm';
 import { MapEmbed } from '@/components/ui/MapEmbed';
+import { DepotContactCards } from '@/components/ui/DepotContactCards';
 import { COMPANY_INFO } from '@/lib/catalog';
 import { Phone, MapPin, Clock, MessageSquare, Mail, Building } from 'lucide-react';
 
@@ -105,6 +106,9 @@ export default function ContactPage() {
             </span>
           </div>
         </div>
+
+        {/* Dedicated Depot & Owner Contact Cards Section */}
+        <DepotContactCards />
 
         {/* Form and Map Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-16">
