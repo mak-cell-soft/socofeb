@@ -87,4 +87,34 @@
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(228, 213, 184, 0.6);
   }
+
+  /* Depot Contacts Marquee Animation */
+  @keyframes marquee-scroll {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  .animate-depot-marquee {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: marquee-scroll 32s linear infinite;
+  }
+
+  .animate-depot-marquee:hover,
+  .animate-depot-marquee:focus-within {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-depot-marquee {
+      animation: none !important;
+      transform: none !important;
+      width: 100% !important;
+    }
+  }
 }

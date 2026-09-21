@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { COMPANY_INFO, PRODUCT_CATEGORIES, SUPPLIER_CONFIG } from '@/lib/catalog';
 import { cn } from '@/lib/utils';
+import { DepotMarqueeBanner } from '@/components/shared/DepotMarqueeBanner';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +27,7 @@ export function Navbar() {
   const [productsOpen, setProductsOpen] = useState(false);
   const [brandsOpen, setBrandsOpen] = useState(false);
   const pathname = usePathname();
+  const isLandingPage = pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,31 +46,35 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 w-full transition-all duration-300">
-      {/* Top micro announcement bar */}
-      <div className="bg-wood-dark text-white/90 text-[11px] sm:text-xs py-1.5 px-4 border-b border-white/10 hidden sm:block">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1.5 text-gray-300">
-              <MapPin className="w-3.5 h-3.5 text-accent" />
-              Ariana : Route de Raoued Km3 (Jâafer) &amp; Route de Gammarth Km9 (Sidi Amor)
-            </span>
-            <span className="hidden md:flex items-center gap-1.5 text-gray-300">
-              <Building2 className="w-3.5 h-3.5 text-accent" />
-              Spécialiste Bois Massifs &amp; Panneaux Dérivés
-            </span>
-          </div>
+      {/* Top Banner: Horizontal scrolling depot contacts marquee on landing page, static announcement bar on subpages */}
+      {isLandingPage ? (
+        <DepotMarqueeBanner />
+      ) : (
+        <div className="bg-wood-dark text-white/90 text-[11px] sm:text-xs py-1.5 px-4 border-b border-white/10 hidden sm:block">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <span className="flex items-center gap-1.5 text-gray-300">
+                <MapPin className="w-3.5 h-3.5 text-accent" />
+                Ariana : Route de Raoued Km3 (Jâafer) &amp; Route de Gammarth Km9 (Sidi Amor)
+              </span>
+              <span className="hidden md:flex items-center gap-1.5 text-gray-300">
+                <Building2 className="w-3.5 h-3.5 text-accent" />
+                Spécialiste Bois Massifs &amp; Panneaux Dérivés
+              </span>
+            </div>
 
-          <div className="flex items-center gap-4">
-            <a
-              href={`tel:${COMPANY_INFO.phone}`}
-              className="flex items-center gap-1.5 text-accent hover:underline font-bold"
-            >
-              <Phone className="w-3 h-3 text-accent" />
-              {COMPANY_INFO.phoneDisplay} — {COMPANY_INFO.contactPerson}
-            </a>
+            <div className="flex items-center gap-4">
+              <a
+                href={`tel:${COMPANY_INFO.phone}`}
+                className="flex items-center gap-1.5 text-accent hover:underline font-bold"
+              >
+                <Phone className="w-3 h-3 text-accent" />
+                {COMPANY_INFO.phoneDisplay} — {COMPANY_INFO.contactPerson}
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Main Navigation Bar */}
       <div

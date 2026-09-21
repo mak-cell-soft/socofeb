@@ -310,3 +310,38 @@ export const COMPANY_INFO = {
     { value: '2', label: 'Dépôts à l\'Ariana', sub: 'Pour vous servir au quotidien' }
   ]
 };
+
+/**
+ * Depot direct sales and technical contacts for the top banner marquee
+ */
+export interface DepotContact {
+  id: string;
+  name: string;
+  phone: string;
+  phoneRaw: string;
+  location: string;
+}
+
+export const DEPOT_CONTACTS: DepotContact[] = [
+  {
+    id: 'lamine-louati',
+    name: 'Lamine LOUATI',
+    phone: '+216 99 218 762',
+    phoneRaw: '+21699218762',
+    location: 'Dépôt Jâafer',
+  },
+  {
+    id: 'hassen-feidi',
+    name: 'Hassen Feidi',
+    phone: '+216 218 760',
+    phoneRaw: '+216218760',
+    location: 'Dépôt Sidi Amor',
+  },
+  {
+    id: 'afef-della',
+    name: 'Afef DELLA',
+    phone: '+216 99 218 308',
+    phoneRaw: '+21699218308',
+    location: 'Dépôt Sidi Amor',
+  },
+];
