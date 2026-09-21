@@ -3,6 +3,7 @@
 import React from 'react';
 import { Phone, MapPin } from 'lucide-react';
 import { DEPOT_CONTACTS, DepotContact } from '@/lib/catalog';
+import { cn } from '@/lib/utils';
 
 /**
  * DepotMarqueeBanner
@@ -14,23 +15,23 @@ import { DEPOT_CONTACTS, DepotContact } from '@/lib/catalog';
  * Key Features:
  * - Continuous, GPU-accelerated horizontal scrolling marquee.
  * - Mathematically seamless loop (dual identical segments shifted by -50%).
+ * - Distinct luxury badge for company Owners / Direction (Mohamed Amine KLABI, Hassen KLABI).
  * - Interactive hover & focus-within pause to allow effortless clicking of tel: links.
  * - Accessible aria-labels and semantic tel: links for mobile & desktop dialers.
  * - Fallback for prefers-reduced-motion allowing static, accessible browsing.
  * - Soft edge vignettes for smooth entrance/exit without visual pop-in.
  */
 export function DepotMarqueeBanner() {
-  // We duplicate the 3 depot contacts multiple times per segment to ensure
+  // We duplicate the 5 depot & owner contacts twice per segment to ensure
   // seamless visual density across ultra-wide desktop monitors (1440p, 4K) as well as mobile.
   const segmentItems: DepotContact[] = [
-    ...DEPOT_CONTACTS,
     ...DEPOT_CONTACTS,
     ...DEPOT_CONTACTS,
   ];
 
   return (
     <aside
-      aria-label="Contacts directs des dépôts SOCOFEB"
+      aria-label="Contacts directs des dépôts et direction SOCOFEB"
       className="relative w-full bg-wood-dark text-white/90 border-b border-accent/25 overflow-hidden z-30 select-none"
     >
       <div className="relative flex items-center h-9 sm:h-10">
@@ -94,15 +95,31 @@ interface MarqueeItemProps {
 
 /**
  * Single Depot Contact item inside the scrolling track.
- * Visual structure: Name  •  Phone  •  Location  •  Separator
+ * Visual structure: Name [Badge: Propriétaire?]  •  Phone (direct link)  •  Location  |
  */
 function MarqueeItem({ contact, isAriaHidden = false }: MarqueeItemProps) {
   return (
     <div className="inline-flex items-center gap-2 sm:gap-2.5 px-4 sm:px-6 shrink-0 text-[11px] sm:text-xs">
-      {/* Contact Person Name */}
-      <span className="font-semibold text-white/95 whitespace-nowrap tracking-wide">
-        {contact.name}
-      </span>
+      {/* Contact Person Name + Owner Badge */}
+      <div className="inline-flex items-center gap-1.5 whitespace-nowrap">
+        <span
+          className={cn(
+            "font-semibold tracking-wide",
+            contact.isOwner ? "text-white font-bold" : "text-white/95"
+          )}
+        >
+          {contact.name}
+        </span>
+
+        {contact.isOwner && (
+          <span
+            className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-extrabold tracking-wider bg-gradient-to-r from-accent/30 to-amber-500/20 text-amber-300 border border-accent/50 uppercase shadow-sm"
+            title="Direction & Propriétaire SOCOFEB"
+          >
+            Propriétaire
+          </span>
+        )}
+      </div>
 
       {/* Bullet separator */}
       <span className="text-accent/60 text-[10px]" aria-hidden="true">
@@ -116,12 +133,22 @@ function MarqueeItem({ contact, isAriaHidden = false }: MarqueeItemProps) {
         aria-label={
           isAriaHidden
             ? undefined
-            : `Appeler ${contact.name} (${contact.location}) au ${contact.phone}`
+            : `Appeler ${contact.name}${contact.isOwner ? ' (Propriétaire)' : ''} (${contact.location}) au ${contact.phone}`
         }
-        className="inline-flex items-center gap-1.5 font-bold text-accent hover:text-accent-light hover:underline transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded px-1 py-0.5"
+        className={cn(
+          "inline-flex items-center gap-1.5 font-bold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded px-1 py-0.5",
+          contact.isOwner
+            ? "text-amber-300 hover:text-amber-200 underline decoration-accent/60 underline-offset-2"
+            : "text-accent hover:text-accent-light hover:underline"
+        )}
       >
         <Phone className="w-3 h-3 text-accent shrink-0" aria-hidden="true" />
         <span className="whitespace-nowrap tracking-wider">{contact.phone}</span>
+        {contact.isOwner && (
+          <span className="text-[9px] font-normal text-amber-200/80 hidden md:inline ml-0.5">
+            (Direct)
+          </span>
+        )}
       </a>
 
       {/* Bullet separator */}

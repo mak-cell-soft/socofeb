@@ -320,15 +320,36 @@ export interface DepotContact {
   phone: string;
   phoneRaw: string;
   location: string;
+  role?: string;
+  isOwner?: boolean;
 }
 
 export const DEPOT_CONTACTS: DepotContact[] = [
+  {
+    id: 'mohamed-amine-klabi',
+    name: 'Mohamed Amine KLABI',
+    phone: '+216 99 218 866',
+    phoneRaw: '+21699218866',
+    location: 'Dépôt Jâafer',
+    role: 'Direction',
+    isOwner: true,
+  },
+  {
+    id: 'hassen-klabi',
+    name: 'Hassen KLABI',
+    phone: '+216 98 360 569',
+    phoneRaw: '+21698360569',
+    location: 'Dépôt Jâafer',
+    role: 'Direction',
+    isOwner: true,
+  },
   {
     id: 'lamine-louati',
     name: 'Lamine LOUATI',
     phone: '+216 99 218 762',
     phoneRaw: '+21699218762',
     location: 'Dépôt Jâafer',
+    isOwner: false,
   },
   {
     id: 'hassen-feidi',
@@ -336,6 +357,7 @@ export const DEPOT_CONTACTS: DepotContact[] = [
     phone: '+216 218 760',
     phoneRaw: '+216218760',
     location: 'Dépôt Sidi Amor',
+    isOwner: false,
   },
   {
     id: 'afef-della',
@@ -343,5 +365,6 @@ export const DEPOT_CONTACTS: DepotContact[] = [
     phone: '+216 99 218 308',
     phoneRaw: '+21699218308',
     location: 'Dépôt Sidi Amor',
+    isOwner: false,
   },
 ];

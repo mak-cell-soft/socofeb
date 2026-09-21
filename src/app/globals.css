@@ -102,7 +102,7 @@
     display: flex;
     width: max-content;
     will-change: transform;
-    animation: marquee-scroll 32s linear infinite;
+    animation: marquee-scroll 42s linear infinite;
   }
 
   .animate-depot-marquee:hover,
