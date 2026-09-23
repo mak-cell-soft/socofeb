@@ -1,0 +1,18 @@
+{
+  "1": {
+    "average": 4.8,
+    "count": 24,
+    "ratings": [
+      {
+        "visitorId": "seed-initial",
+        "rating": 5,
+        "createdAt": "2026-01-15T10:00:00.000Z"
+      }
+    ]
+  },
+  "2": {
+    "average": null,
+    "count": 0,
+    "ratings": []
+  }
+}

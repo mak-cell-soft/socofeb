@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/sync-decors.mjs",
-    "prebuild": "node scripts/sync-decors.mjs",
+    "predev": "node scripts/sync-decors.mjs && node scripts/sync-artisans.mjs",
+    "prebuild": "node scripts/sync-decors.mjs && node scripts/sync-artisans.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

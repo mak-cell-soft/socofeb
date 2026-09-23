@@ -1,0 +1,573 @@
+{
+  "updatedAt": "2026-09-23T19:11:58.124Z",
+  "totalArtisans": 2,
+  "totalProjects": 25,
+  "artisans": [
+    {
+      "id": 1,
+      "nom": "SIFFI",
+      "prenom": "Walid",
+      "fullName": "Walid SIFFI",
+      "profile": "/images/realisations/profile/walid-siffi.jpeg",
+      "phones": {
+        "primary": "+216 54 357 470",
+        "secondary": "+216 99 218 866"
+      },
+      "socials": {
+        "facebook": "https://www.facebook.com/share/19X3mMSz86/",
+        "instagram": null
+      },
+      "imagesDir": "/images/realisations/images/1",
+      "categories": [
+        {
+          "id": "meubles",
+          "label": "Meubles",
+          "count": 14
+        },
+        {
+          "id": "portes",
+          "label": "Portes",
+          "count": 8
+        },
+        {
+          "id": "dressing",
+          "label": "Dressing",
+          "count": 3
+        }
+      ],
+      "images": [
+        {
+          "id": "artisan-1-dressing-dress1",
+          "src": "/images/realisations/images/1/dressing/dress1.jpeg",
+          "category": "dressing",
+          "categoryLabel": "Dressing",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation dressing sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "dress1.jpeg"
+        },
+        {
+          "id": "artisan-1-dressing-dress2",
+          "src": "/images/realisations/images/1/dressing/dress2.jpeg",
+          "category": "dressing",
+          "categoryLabel": "Dressing",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation dressing sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "dress2.jpeg"
+        },
+        {
+          "id": "artisan-1-dressing-dress3",
+          "src": "/images/realisations/images/1/dressing/dress3.jpeg",
+          "category": "dressing",
+          "categoryLabel": "Dressing",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation dressing sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "dress3.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub1",
+          "src": "/images/realisations/images/1/meubles/meub1.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub1.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub2",
+          "src": "/images/realisations/images/1/meubles/meub2.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub2.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub3",
+          "src": "/images/realisations/images/1/meubles/meub3.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub3.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub4",
+          "src": "/images/realisations/images/1/meubles/meub4.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub4.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub5",
+          "src": "/images/realisations/images/1/meubles/meub5.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub5.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub6",
+          "src": "/images/realisations/images/1/meubles/meub6.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub6.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub7",
+          "src": "/images/realisations/images/1/meubles/meub7.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub7.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub8",
+          "src": "/images/realisations/images/1/meubles/meub8.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub8.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub9",
+          "src": "/images/realisations/images/1/meubles/meub9.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub9.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub10",
+          "src": "/images/realisations/images/1/meubles/meub10.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub10.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub11",
+          "src": "/images/realisations/images/1/meubles/meub11.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub11.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub12",
+          "src": "/images/realisations/images/1/meubles/meub12.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub12.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub13",
+          "src": "/images/realisations/images/1/meubles/meub13.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub13.jpeg"
+        },
+        {
+          "id": "artisan-1-meubles-meub14",
+          "src": "/images/realisations/images/1/meubles/meub14.jpeg",
+          "category": "meubles",
+          "categoryLabel": "Meubles",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "meub14.jpeg"
+        },
+        {
+          "id": "artisan-1-portes-p1",
+          "src": "/images/realisations/images/1/portes/p1.jpeg",
+          "category": "portes",
+          "categoryLabel": "Portes",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "p1.jpeg"
+        },
+        {
+          "id": "artisan-1-portes-p2",
+          "src": "/images/realisations/images/1/portes/p2.jpeg",
+          "category": "portes",
+          "categoryLabel": "Portes",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "p2.jpeg"
+        },
+        {
+          "id": "artisan-1-portes-p3",
+          "src": "/images/realisations/images/1/portes/p3.jpeg",
+          "category": "portes",
+          "categoryLabel": "Portes",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "p3.jpeg"
+        },
+        {
+          "id": "artisan-1-portes-p4",
+          "src": "/images/realisations/images/1/portes/p4.jpeg",
+          "category": "portes",
+          "categoryLabel": "Portes",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "p4.jpeg"
+        },
+        {
+          "id": "artisan-1-portes-p5",
+          "src": "/images/realisations/images/1/portes/p5.jpeg",
+          "category": "portes",
+          "categoryLabel": "Portes",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "p5.jpeg"
+        },
+        {
+          "id": "artisan-1-portes-p6",
+          "src": "/images/realisations/images/1/portes/p6.jpeg",
+          "category": "portes",
+          "categoryLabel": "Portes",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "p6.jpeg"
+        },
+        {
+          "id": "artisan-1-portes-p7",
+          "src": "/images/realisations/images/1/portes/p7.jpeg",
+          "category": "portes",
+          "categoryLabel": "Portes",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "p7.jpeg"
+        },
+        {
+          "id": "artisan-1-portes-p8",
+          "src": "/images/realisations/images/1/portes/p8.jpeg",
+          "category": "portes",
+          "categoryLabel": "Portes",
+          "artisanId": 1,
+          "artisanName": "Walid SIFFI",
+          "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+          "filename": "p8.jpeg"
+        }
+      ],
+      "totalProjects": 25,
+      "rating": {
+        "average": 4.8,
+        "count": 24
+      },
+      "bio": "Maître menuisier et agenceur d'intérieur spécialisé dans les dressings haut de gamme, cuisines sur mesure et mobilier architectural en panneaux bois nobles."
+    },
+    {
+      "id": 2,
+      "nom": "",
+      "prenom": "",
+      "fullName": "Artisan #2",
+      "profile": null,
+      "phones": {
+        "primary": null,
+        "secondary": null
+      },
+      "socials": {
+        "facebook": null,
+        "instagram": null
+      },
+      "imagesDir": null,
+      "categories": [],
+      "images": [],
+      "totalProjects": 0,
+      "rating": {
+        "average": null,
+        "count": 0
+      }
+    }
+  ],
+  "allImages": [
+    {
+      "id": "artisan-1-dressing-dress1",
+      "src": "/images/realisations/images/1/dressing/dress1.jpeg",
+      "category": "dressing",
+      "categoryLabel": "Dressing",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation dressing sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "dress1.jpeg"
+    },
+    {
+      "id": "artisan-1-dressing-dress2",
+      "src": "/images/realisations/images/1/dressing/dress2.jpeg",
+      "category": "dressing",
+      "categoryLabel": "Dressing",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation dressing sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "dress2.jpeg"
+    },
+    {
+      "id": "artisan-1-dressing-dress3",
+      "src": "/images/realisations/images/1/dressing/dress3.jpeg",
+      "category": "dressing",
+      "categoryLabel": "Dressing",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation dressing sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "dress3.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub1",
+      "src": "/images/realisations/images/1/meubles/meub1.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub1.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub2",
+      "src": "/images/realisations/images/1/meubles/meub2.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub2.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub3",
+      "src": "/images/realisations/images/1/meubles/meub3.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub3.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub4",
+      "src": "/images/realisations/images/1/meubles/meub4.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub4.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub5",
+      "src": "/images/realisations/images/1/meubles/meub5.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub5.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub6",
+      "src": "/images/realisations/images/1/meubles/meub6.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub6.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub7",
+      "src": "/images/realisations/images/1/meubles/meub7.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub7.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub8",
+      "src": "/images/realisations/images/1/meubles/meub8.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub8.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub9",
+      "src": "/images/realisations/images/1/meubles/meub9.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub9.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub10",
+      "src": "/images/realisations/images/1/meubles/meub10.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub10.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub11",
+      "src": "/images/realisations/images/1/meubles/meub11.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub11.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub12",
+      "src": "/images/realisations/images/1/meubles/meub12.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub12.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub13",
+      "src": "/images/realisations/images/1/meubles/meub13.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub13.jpeg"
+    },
+    {
+      "id": "artisan-1-meubles-meub14",
+      "src": "/images/realisations/images/1/meubles/meub14.jpeg",
+      "category": "meubles",
+      "categoryLabel": "Meubles",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation meubles sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "meub14.jpeg"
+    },
+    {
+      "id": "artisan-1-portes-p1",
+      "src": "/images/realisations/images/1/portes/p1.jpeg",
+      "category": "portes",
+      "categoryLabel": "Portes",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "p1.jpeg"
+    },
+    {
+      "id": "artisan-1-portes-p2",
+      "src": "/images/realisations/images/1/portes/p2.jpeg",
+      "category": "portes",
+      "categoryLabel": "Portes",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "p2.jpeg"
+    },
+    {
+      "id": "artisan-1-portes-p3",
+      "src": "/images/realisations/images/1/portes/p3.jpeg",
+      "category": "portes",
+      "categoryLabel": "Portes",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "p3.jpeg"
+    },
+    {
+      "id": "artisan-1-portes-p4",
+      "src": "/images/realisations/images/1/portes/p4.jpeg",
+      "category": "portes",
+      "categoryLabel": "Portes",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "p4.jpeg"
+    },
+    {
+      "id": "artisan-1-portes-p5",
+      "src": "/images/realisations/images/1/portes/p5.jpeg",
+      "category": "portes",
+      "categoryLabel": "Portes",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "p5.jpeg"
+    },
+    {
+      "id": "artisan-1-portes-p6",
+      "src": "/images/realisations/images/1/portes/p6.jpeg",
+      "category": "portes",
+      "categoryLabel": "Portes",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "p6.jpeg"
+    },
+    {
+      "id": "artisan-1-portes-p7",
+      "src": "/images/realisations/images/1/portes/p7.jpeg",
+      "category": "portes",
+      "categoryLabel": "Portes",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "p7.jpeg"
+    },
+    {
+      "id": "artisan-1-portes-p8",
+      "src": "/images/realisations/images/1/portes/p8.jpeg",
+      "category": "portes",
+      "categoryLabel": "Portes",
+      "artisanId": 1,
+      "artisanName": "Walid SIFFI",
+      "alt": "Réalisation portes sur mesure par Walid SIFFI — Socofeb Décor",
+      "filename": "p8.jpeg"
+    }
+  ]
+}

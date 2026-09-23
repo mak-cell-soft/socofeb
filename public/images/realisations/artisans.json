@@ -1,0 +1,39 @@
+{
+  "data": {
+    "artisans": [
+      {
+        "id": 1,
+        "nom": "SIFFI",
+        "prenom": "Walid",
+        "profile": "socofeb\\public\\images\\realisations\\profile\\walid-siffi.jpeg",
+        "phones": {
+          "primary": "+216 54 357 470",
+          "secondary": "+216 99 218 866"
+        },
+        "socials": {
+          "facebook": "https://www.facebook.com/share/19X3mMSz86/",
+          "instagram": null
+        },
+        "images": "socofeb\\public\\images\\realisations\\images\\1"
+      },
+      {
+        "id": 2,
+        "nom": "",
+        "prenom": "",
+        "profile": null,
+        "phones": {
+          "primary": null,
+          "secondary": null
+        },
+        "socials": {
+          "facebook": null,
+          "instagram": null
+        },
+        "images": null
+      }
+    ]
+  },
+  "meta": {
+    "total": 2
+  }
+}

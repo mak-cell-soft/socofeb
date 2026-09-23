@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-21T17:31:20.167Z",
+  "updatedAt": "2026-09-23T19:12:27.038Z",
   "enterprises": {
     "starwood": {
       "id": "starwood",
       "logo": "/images/starwood/logo/logo_starwood.png",
-      "decorsCount": 38,
+      "decorsCount": 37,
       "decors": [
         {
           "filename": "AFRIQUE-327.jpg",
@@ -47,26 +47,18 @@
           "supplier": "starwood"
         },
         {
-          "filename": "COMPARAISON-282.jpg",
-          "name": "COMPARAISON",
-          "ref": "282",
-          "src": "/images/starwood/decors/COMPARAISON-282.jpg",
-          "ext": "jpg",
-          "supplier": "starwood"
-        },
-        {
-          "filename": "COMPARAISON-308.jpg",
-          "name": "COMPARAISON",
-          "ref": "308",
-          "src": "/images/starwood/decors/COMPARAISON-308.jpg",
-          "ext": "jpg",
-          "supplier": "starwood"
-        },
-        {
           "filename": "DENİZ FENERİ-63.jpg",
           "name": "DENİZ FENERİ",
           "ref": "63",
           "src": "/images/starwood/decors/DENİZ FENERİ-63.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "Derin Tesbih-282.jpg",
+          "name": "Derin Tesbih",
+          "ref": "282",
+          "src": "/images/starwood/decors/Derin Tesbih-282.jpg",
           "ext": "jpg",
           "supplier": "starwood"
         },
@@ -139,6 +131,14 @@
           "name": "KEMENÇE",
           "ref": "294",
           "src": "/images/starwood/decors/KEMENÇE-294.jpg",
+          "ext": "jpg",
+          "supplier": "starwood"
+        },
+        {
+          "filename": "KENAR BANDI-308.jpg",
+          "name": "KENAR BANDI",
+          "ref": "308",
+          "src": "/images/starwood/decors/KENAR BANDI-308.jpg",
           "ext": "jpg",
           "supplier": "starwood"
         },
@@ -275,14 +275,6 @@
           "name": "SONOMO",
           "ref": "17",
           "src": "/images/starwood/decors/SONOMO-17.jpg",
-          "ext": "jpg",
-          "supplier": "starwood"
-        },
-        {
-          "filename": "TESBIH-282.jpg",
-          "name": "TESBIH",
-          "ref": "282",
-          "src": "/images/starwood/decors/TESBIH-282.jpg",
           "ext": "jpg",
           "supplier": "starwood"
         },
@@ -654,7 +646,7 @@
     "agt": {
       "id": "agt",
       "logo": "/images/agt/logo/agt-logo.svg",
-      "decorsCount": 11,
+      "decorsCount": 12,
       "decors": [
         {
           "filename": "Anthracite-6022.webp",
@@ -718,6 +710,14 @@
           "ref": "6008",
           "src": "/images/agt/decors/Gray-6008.webp",
           "ext": "webp",
+          "supplier": "agt"
+        },
+        {
+          "filename": "GRIS Clair-6020.jpg",
+          "name": "GRIS Clair",
+          "ref": "6020",
+          "src": "/images/agt/decors/GRIS Clair-6020.jpg",
+          "ext": "jpg",
           "supplier": "agt"
         },
         {

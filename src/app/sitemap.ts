@@ -3,6 +3,7 @@ import { PRODUCT_CATEGORIES } from '@/lib/catalog';
 import { SUPPLIERS } from '@/types/image';
 import { SITE_ORIGIN } from '@/lib/seo';
 import { getAllIndexableDecors } from '@/lib/decors';
+import { getArtisans } from '@/lib/artisans';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = SITE_ORIGIN;
@@ -121,6 +122,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
   (bois?.products || []).forEach((p) => {
     routes.push({
       url: `${baseUrl}/produits/bois/${p.slug}`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    });
+  });
+
+  // 9. Individual Artisan Portfolio Pages (/realisations/artisan/[id])
+  const artisans = getArtisans();
+  artisans.forEach((artisan) => {
+    routes.push({
+      url: `${baseUrl}/realisations/artisan/${artisan.id}`,
       lastModified: now,
       changeFrequency: 'weekly',
       priority: 0.8,
