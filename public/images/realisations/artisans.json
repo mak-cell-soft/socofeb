@@ -5,6 +5,8 @@
         "id": 1,
         "nom": "SIFFI",
         "prenom": "Walid",
+		"society_name": null,
+		"activities": "Réparation, Ameublement, sur mesure",
         "profile": "socofeb\\public\\images\\realisations\\profile\\walid-siffi.jpeg",
         "phones": {
           "primary": "+216 54 357 470",
@@ -18,18 +20,20 @@
       },
       {
         "id": 2,
-        "nom": "",
-        "prenom": "",
-        "profile": null,
+        "nom": "BEN MOUSSA",
+        "prenom": "Walid",
+		"society_name": "Racine Cuisine",
+		"activities": "Aménagement, Ameublement, Portes, Salle de Bain, sur mesure",
+        "profile": "socofeb\\public\\images\\realisations\\profile\\racine-cuisine.png",
         "phones": {
-          "primary": null,
-          "secondary": null
+          "primary": "+216 98 101 737",
+          "secondary": "+216 22 622 006"
         },
         "socials": {
-          "facebook": null,
+          "facebook": "https://www.facebook.com/share/19TgYR7pcJ/",
           "instagram": null
         },
-        "images": null
+        "images": "socofeb\\public\\images\\realisations\\images\\2"
       }
     ]
   },

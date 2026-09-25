@@ -45,7 +45,10 @@ export interface ArtisanProjectImage {
   categoryLabel: string;  // Formatted label e.g. 'Dressing'
   artisanId: number;      // Associated artisan ID
   artisanName: string;    // Associated artisan full name
-  alt: string;            // Descriptive accessibility alt text
+  artisanSociety?: string | null; // Associated company (e.g. 'Racine Cuisine')
+  title: string;          // Human & SEO descriptive project title (e.g. 'Cuisine moderne sur mesure')
+  description?: string;   // Contextual project description
+  alt: string;            // Descriptive accessibility & SEO alt text
   filename: string;       // Original image filename
 }
 
@@ -55,6 +58,8 @@ export interface Artisan {
   nom: string;
   prenom: string;
   fullName: string;
+  societyName?: string | null;
+  activities?: string | null;
   profile: string | null; // Clean public browser URL or null
   phones: ArtisanPhones;
   socials: ArtisanSocials;
@@ -71,6 +76,8 @@ export interface RawArtisanItem {
   id: number;
   nom: string;
   prenom: string;
+  society_name?: string | null;
+  activities?: string | null;
   profile: string | null;
   phones: ArtisanPhones;
   socials: ArtisanSocials;

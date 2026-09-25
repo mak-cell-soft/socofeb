@@ -57,8 +57,9 @@ export async function generateMetadata({ params }: ArtisanPageProps): Promise<Me
     };
   }
 
-  const title = `${artisan.fullName} — Artisan Socofeb Décor`;
-  const description = `Découvrez le portfolio et les réalisations de ${artisan.fullName}, artisan ébéniste et menuisier partenaire SOCOFEB Décor. Agencements sur-mesure et mobilier contemporain.`;
+  const companySuffix = artisan.societyName ? ` (${artisan.societyName})` : '';
+  const title = `${artisan.fullName}${companySuffix} — Artisan Socofeb Décor`;
+  const description = `Découvrez le portfolio et les réalisations de ${artisan.fullName}${companySuffix}, artisan partenaire SOCOFEB Décor. ${artisan.activities || "Agencements sur-mesure et menuiserie contemporaine."}`;
 
   return {
     title,
@@ -132,7 +133,7 @@ export default function ArtisanDetailPage({ params }: ArtisanPageProps) {
                   fill
                   priority
                   sizes="180px"
-                  className="object-cover object-top"
+                  className={artisan.societyName ? 'object-contain p-4 bg-white' : 'object-cover object-top'}
                 />
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-wood-cream to-wood-border/60 text-primary">
@@ -165,10 +166,22 @@ export default function ArtisanDetailPage({ params }: ArtisanPageProps) {
                 </span>
               </div>
 
-              {/* H1 Title */}
-              <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-primary tracking-tight">
-                {artisan.fullName}
-              </h1>
+              {/* H1 Title & Company */}
+              <div>
+                <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-primary tracking-tight">
+                  {artisan.fullName}
+                </h1>
+                {artisan.societyName && (
+                  <p className="text-lg sm:text-xl font-heading font-semibold text-secondary mt-1">
+                    {artisan.societyName}
+                  </p>
+                )}
+                {artisan.activities && (
+                  <p className="text-xs sm:text-sm text-accent font-semibold tracking-wide mt-1">
+                    ✦ {artisan.activities}
+                  </p>
+                )}
+              </div>
 
               {/* Rating Section (Guarantees NO "0.0 ★" when unrated) */}
               <div className="flex items-center justify-center md:justify-start gap-2">

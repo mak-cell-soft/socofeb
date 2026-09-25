@@ -15,6 +15,23 @@ const projectRoot = path.resolve(__dirname, '..');
 
 const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.jfif']);
 
+const CANONICAL_CATEGORY_IDS = {
+  cuisine: 'cuisines',
+  cuisines: 'cuisines',
+  dressing: 'dressing',
+  dressings: 'dressing',
+  meuble: 'meubles',
+  meubles: 'meubles',
+  porte: 'portes',
+  portes: 'portes',
+  claustra: 'claustras',
+  claustras: 'claustras',
+  bureau: 'bureaux',
+  bureaux: 'bureaux',
+  salon: 'salon',
+  chambre: 'chambre',
+};
+
 // Category name mapping for consistent French typography
 const CATEGORY_LABELS = {
   cuisine: 'Cuisine',
@@ -117,7 +134,8 @@ function syncArtisans() {
             continue;
           }
 
-          const catId = subDir.toLowerCase();
+          const rawCat = subDir.toLowerCase();
+          const catId = CANONICAL_CATEGORY_IDS[rawCat] || rawCat;
           const catLabel = formatCategoryLabel(catId);
 
           categories.push({
@@ -126,9 +144,46 @@ function syncArtisans() {
             count: files.length,
           });
 
+          let fileIndex = 0;
           for (const file of files) {
+            fileIndex += 1;
             const ext = path.extname(file).toLowerCase();
             const baseName = path.basename(file, ext);
+            const societySuffix = raw.society_name ? ` (${raw.society_name})` : '';
+
+            // Generate contextual, high-relevance SEO titles, descriptions and bilingual ALTs
+            let projectTitle = `${catLabel} sur mesure`;
+            let projectDescription = `Projet d'agencement intérieur et menuiserie sur mesure réalisé par ${fullName}${societySuffix} avec les panneaux et bois nobles SOCOFEB.`;
+            let projectAlt = `Réalisation ${catLabel.toLowerCase()} sur mesure par artisan menuisier ${fullName}${societySuffix} — SOCOFEB Tunisie`;
+
+            if (catId === 'cuisines') {
+              projectTitle = fileIndex % 2 === 0
+                ? `Aménagement de cuisine équipée sur mesure`
+                : `Cuisine moderne contemporaine sur mesure`;
+              projectDescription = `Conception et fabrication de cuisine sur mesure en panneaux MDF nobles et plan de travail résistant par ${raw.society_name || fullName} en Tunisie.`;
+              projectAlt = `Cuisine sur mesure moderne et aménagement de cuisine par ${fullName}${societySuffix} — SOCOFEB Tunisie (مطبخ عصري وتأثيث حسب الطلب)`;
+            } else if (catId === 'dressing') {
+              projectTitle = fileIndex % 2 === 0
+                ? `Dressing architectural et placards intégrés sur mesure`
+                : `Dressing sur mesure et optimisation de rangement`;
+              projectDescription = `Agencement de dressing sur mesure, penderies modulaires et placards intégrés en bois noble pour chambre et suite parentale.`;
+              projectAlt = `Dressing sur mesure et placard de rangement par ${fullName}${societySuffix} — SOCOFEB Tunisie (دريسينغ وخزائن على المقاس)`;
+            } else if (catId === 'meubles') {
+              projectTitle = fileIndex % 3 === 0
+                ? `Meuble TV contemporain et claustra décoratif`
+                : fileIndex % 2 === 0
+                ? `Mobilier design et ameublement sur mesure`
+                : `Bibliothèque et meuble de rangement sur mesure`;
+              projectDescription = `Création de mobilier sur mesure pour salon, bureau et séjour en panneaux décoratifs et finitions bois soignées.`;
+              projectAlt = `Meuble et ameublement sur mesure en bois par ${fullName}${societySuffix} — SOCOFEB Tunisie (أثاث خشبي حسب الطلب)`;
+            } else if (catId === 'portes') {
+              projectTitle = fileIndex % 2 === 0
+                ? `Portes intérieures contemporaines en bois sur mesure`
+                : `Porte d'intérieur design en bois noble`;
+              projectDescription = `Menuiserie de portes intérieures sur mesure, huisseries et finitions contemporaines en bois massif et dérivés.`;
+              projectAlt = `Porte intérieure en bois sur mesure par ${fullName}${societySuffix} — SOCOFEB Tunisie (أبواب خشبية حسب الطلب)`;
+            }
+
             const imageItem = {
               id: `artisan-${raw.id}-${catId}-${baseName}`,
               src: `/images/realisations/images/${raw.id}/${subDir}/${file}`,
@@ -136,7 +191,10 @@ function syncArtisans() {
               categoryLabel: catLabel,
               artisanId: raw.id,
               artisanName: fullName,
-              alt: `Réalisation ${catLabel.toLowerCase()} sur mesure par ${fullName} — Socofeb Décor`,
+              artisanSociety: raw.society_name || null,
+              title: projectTitle,
+              description: projectDescription,
+              alt: projectAlt,
               filename: file,
             };
 
@@ -164,6 +222,8 @@ function syncArtisans() {
       nom: raw.nom,
       prenom: raw.prenom,
       fullName,
+      societyName: raw.society_name || null,
+      activities: raw.activities || null,
       profile: profileUrl,
       phones: {
         primary: raw.phones?.primary || null,
@@ -180,7 +240,9 @@ function syncArtisans() {
       rating,
       bio: raw.id === 1
         ? "Maître menuisier et agenceur d'intérieur spécialisé dans les dressings haut de gamme, cuisines sur mesure et mobilier architectural en panneaux bois nobles."
-        : undefined,
+        : raw.id === 2
+        ? "Fondateur de Racine Cuisine, artisan menuisier d'excellence spécialisé dans la conception et l'agencement sur-mesure de cuisines contemporaines, dressings, portes intérieures et salles de bain."
+        : (raw.activities ? `Artisan qualifié partenaire SOCOFEB spécialisé en ${raw.activities}.` : undefined),
     });
   }
 

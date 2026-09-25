@@ -29,13 +29,15 @@ export function ArtisanGrid({ artisans, availableCategories }: ArtisanGridProps)
   // Filter artisans based on search input and selected specialty
   const filteredArtisans = useMemo(() => {
     return artisans.filter((artisan) => {
-      // Name search
+      // Name, company or activities search
       const query = searchQuery.trim().toLowerCase();
       const matchesSearch =
         !query ||
         artisan.fullName.toLowerCase().includes(query) ||
         artisan.prenom.toLowerCase().includes(query) ||
-        artisan.nom.toLowerCase().includes(query);
+        artisan.nom.toLowerCase().includes(query) ||
+        Boolean(artisan.societyName?.toLowerCase().includes(query)) ||
+        Boolean(artisan.activities?.toLowerCase().includes(query));
 
       // Specialty category match
       const matchesCategory =
@@ -53,13 +55,13 @@ export function ArtisanGrid({ artisans, availableCategories }: ArtisanGridProps)
         {/* Section Header */}
         <div className="max-w-3xl mb-10 sm:mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-accent bg-accent/15 px-3 py-1 rounded-full border border-accent/25">
-            Ébénistes &amp; Agenceurs
+            Artisans Menuisiers &amp; Agenceurs · نجار محترف في تونس
           </span>
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mt-3 mb-3">
-            Nos artisans
+            Nos artisans menuisiers et agenceurs partenaires
           </h2>
           <p className="text-charcoal-light text-base sm:text-lg">
-            Des artisans passionnés derrière chaque réalisation. Découvrez leur univers et confiez-leur vos projets de menuiserie sur-mesure.
+            Des maîtres artisans du bois et de l&apos;aménagement intérieur. De la conception sur mesure à la fabrication et pose de cuisines, dressings, mobilier et menuiseries, confiez votre projet à un artisan menuisier qualifié en Tunisie.
           </p>
         </div>
 

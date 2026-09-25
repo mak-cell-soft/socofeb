@@ -203,15 +203,16 @@ export function ArtisanLightbox({
             <div className="text-center sm:text-left space-y-1">
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                 <span className="font-heading text-lg sm:text-xl font-bold text-white tracking-wide">
-                  Réalisation {currentImage.categoryLabel}
+                  {currentImage.title || `Réalisation ${currentImage.categoryLabel}`}
                 </span>
                 <span className="inline-flex items-center gap-1 text-xs text-accent font-semibold bg-accent/15 px-2.5 py-0.5 rounded-full border border-accent/25">
                   <User className="w-3 h-3" />
                   {activeArtisanName}
+                  {currentImage.artisanSociety ? ` (${currentImage.artisanSociety})` : ''}
                 </span>
               </div>
               <p className="text-xs text-gray-300">
-                Mise en œuvre soignée en panneaux dérivés et bois massif SOCOFEB.
+                {currentImage.description || 'Mise en œuvre soignée en panneaux dérivés et bois massif SOCOFEB.'}
               </p>
             </div>
 

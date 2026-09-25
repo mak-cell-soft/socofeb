@@ -43,10 +43,14 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
           {artisan.profile ? (
             <Image
               src={artisan.profile}
-              alt={`Artisan ${artisan.fullName}`}
+              alt={`Artisan ${artisan.fullName}${artisan.societyName ? ` — ${artisan.societyName}` : ''}`}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
+              className={
+                artisan.societyName
+                  ? 'object-contain p-5 bg-white group-hover:scale-105 transition-transform duration-500 ease-out'
+                  : 'object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out'
+              }
             />
           ) : (
             // Professional craftsman monogram fallback when no photo exists
@@ -82,13 +86,27 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
 
         {/* Card Body */}
         <div className="p-6">
-          {/* Artisan Name */}
-          <h3 className="font-heading text-xl font-bold text-primary group-hover:text-accent transition-colors line-clamp-1">
-            {artisan.fullName}
-          </h3>
+          {/* Artisan & Society Name */}
+          <div>
+            <h3 className="font-heading text-xl font-bold text-primary group-hover:text-accent transition-colors line-clamp-1">
+              {artisan.fullName}
+            </h3>
+            {artisan.societyName && (
+              <p className="text-xs font-bold uppercase tracking-wider text-secondary mt-0.5">
+                {artisan.societyName}
+              </p>
+            )}
+          </div>
+
+          {/* Activities line if present */}
+          {artisan.activities && (
+            <p className="text-[11px] text-accent font-medium mt-1 line-clamp-1">
+              {artisan.activities}
+            </p>
+          )}
 
           {/* Rating Section (Guarantees NO "0.0 ★" when unrated) */}
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center gap-2 mt-2.5">
             {ratingInfo.hasReviews ? (
               <div className="flex items-center gap-1.5">
                 <div className="flex items-center text-amber-500">

@@ -159,18 +159,27 @@ export function RealisationsGallery({
                     <Eye className="w-4 h-4" />
                   </div>
 
-                  {/* Bottom Info: Artisan Attribution */}
-                  {showArtisanBadge && image.artisanName && (
-                    <div className="absolute inset-x-0 bottom-0 p-4 z-10 text-white">
-                      <div className="flex items-center gap-1.5 text-xs text-accent font-semibold">
-                        <User className="w-3 h-3 text-accent" />
-                        <span>{image.artisanName}</span>
+                  {/* Bottom Info: Project Title & Artisan Attribution */}
+                  <div className="absolute inset-x-0 bottom-0 p-4 z-10 text-white">
+                    {image.title ? (
+                      <h3 className="font-heading font-semibold text-sm text-white line-clamp-1 group-hover:text-accent transition-colors">
+                        {image.title}
+                      </h3>
+                    ) : (
+                      <h3 className="font-heading font-semibold text-sm text-white line-clamp-1">
+                        {image.categoryLabel} sur mesure
+                      </h3>
+                    )}
+                    {showArtisanBadge && image.artisanName && (
+                      <div className="flex items-center gap-1.5 text-[11px] text-gray-300 font-normal mt-0.5">
+                        <User className="w-3 h-3 text-accent shrink-0" />
+                        <span className="truncate">
+                          {image.artisanName}
+                          {image.artisanSociety ? ` · ${image.artisanSociety}` : ''}
+                        </span>
                       </div>
-                      <p className="text-[11px] text-gray-300 line-clamp-1 font-light mt-0.5">
-                        Projet sur-mesure
-                      </p>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </motion.div>
               ))}
             </AnimatePresence>
