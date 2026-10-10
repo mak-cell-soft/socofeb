@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-25T01:55:40.118Z",
+  "updatedAt": "2026-10-10T17:50:39.525Z",
   "enterprises": {
     "starwood": {
       "id": "starwood",
@@ -578,66 +578,66 @@
       "decorsCount": 8,
       "decors": [
         {
-          "filename": "Cream-VHG 03.jpg",
+          "filename": "Cream-VHG03.jpg",
           "name": "Cream",
-          "ref": "VHG 03",
-          "src": "/images/venni/decors/Cream-VHG 03.jpg",
+          "ref": "VHG03",
+          "src": "/images/venni/decors/Cream-VHG03.jpg",
           "ext": "jpg",
           "supplier": "venni"
         },
         {
-          "filename": "Galaxy Creme-VHG 11.jpg",
+          "filename": "Galaxy Creme-VHG11.jpg",
           "name": "Galaxy Creme",
-          "ref": "VHG 11",
-          "src": "/images/venni/decors/Galaxy Creme-VHG 11.jpg",
+          "ref": "VHG11",
+          "src": "/images/venni/decors/Galaxy Creme-VHG11.jpg",
           "ext": "jpg",
           "supplier": "venni"
         },
         {
-          "filename": "Galaxy Honey-VHG 13.jpg",
+          "filename": "Galaxy Honey-VHG13.jpg",
           "name": "Galaxy Honey",
-          "ref": "VHG 13",
-          "src": "/images/venni/decors/Galaxy Honey-VHG 13.jpg",
+          "ref": "VHG13",
+          "src": "/images/venni/decors/Galaxy Honey-VHG13.jpg",
           "ext": "jpg",
           "supplier": "venni"
         },
         {
-          "filename": "Galaxy Metalic Anthracite-VHG 12.jpg",
+          "filename": "Galaxy Metalic Anthracite-VHG12.jpg",
           "name": "Galaxy Metalic Anthracite",
-          "ref": "VHG 12",
-          "src": "/images/venni/decors/Galaxy Metalic Anthracite-VHG 12.jpg",
+          "ref": "VHG12",
+          "src": "/images/venni/decors/Galaxy Metalic Anthracite-VHG12.jpg",
           "ext": "jpg",
           "supplier": "venni"
         },
         {
-          "filename": "Galaxy Metalic Grey-VHG 14.jpg",
+          "filename": "Galaxy Metalic Grey-VHG14.jpg",
           "name": "Galaxy Metalic Grey",
-          "ref": "VHG 14",
-          "src": "/images/venni/decors/Galaxy Metalic Grey-VHG 14.jpg",
+          "ref": "VHG14",
+          "src": "/images/venni/decors/Galaxy Metalic Grey-VHG14.jpg",
           "ext": "jpg",
           "supplier": "venni"
         },
         {
-          "filename": "German OAK-VHG 17.jpg",
+          "filename": "German OAK-VHG17.jpg",
           "name": "German OAK",
-          "ref": "VHG 17",
-          "src": "/images/venni/decors/German OAK-VHG 17.jpg",
+          "ref": "VHG17",
+          "src": "/images/venni/decors/German OAK-VHG17.jpg",
           "ext": "jpg",
           "supplier": "venni"
         },
         {
-          "filename": "Gris Foncé-VHG 09.jpg",
+          "filename": "Gris Foncé-VHG09.jpg",
           "name": "Gris Foncé",
-          "ref": "VHG 09",
-          "src": "/images/venni/decors/Gris Foncé-VHG 09.jpg",
+          "ref": "VHG09",
+          "src": "/images/venni/decors/Gris Foncé-VHG09.jpg",
           "ext": "jpg",
           "supplier": "venni"
         },
         {
-          "filename": "Noir-VHG 02.jpg",
+          "filename": "Noir-VHG02.jpg",
           "name": "Noir",
-          "ref": "VHG 02",
-          "src": "/images/venni/decors/Noir-VHG 02.jpg",
+          "ref": "VHG02",
+          "src": "/images/venni/decors/Noir-VHG02.jpg",
           "ext": "jpg",
           "supplier": "venni"
         }
@@ -721,10 +721,10 @@
           "supplier": "agt"
         },
         {
-          "filename": "Marbre Blanc 6007.webp",
-          "name": "Marbre",
-          "ref": "Blanc 6007",
-          "src": "/images/agt/decors/Marbre Blanc 6007.webp",
+          "filename": "Marbre Blanc-6007.webp",
+          "name": "Marbre Blanc",
+          "ref": "6007",
+          "src": "/images/agt/decors/Marbre Blanc-6007.webp",
           "ext": "webp",
           "supplier": "agt"
         },

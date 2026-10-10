@@ -20,6 +20,43 @@ export interface ContactApiResponse {
   message?: string;
 }
 
+/**
+ * DTO matching ACYA quote intake endpoint POST /api/public/quote-requests
+ */
+export interface AcyaQuoteRequestDto {
+  product: string;
+  quantity: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone?: string;
+  message?: string;
+  source: string;
+  idempotencyKey: string;
+}
+
+/**
+ * Payload sent from browser to SOCOFEB POST /api/quote
+ */
+export interface QuoteRequestBody {
+  product: string;
+  quantity: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone?: string;
+  message?: string;
+  idempotencyKey: string;
+  botField?: string;
+}
+
+/**
+ * Standard response contract for quote API endpoint
+ */
+export interface QuoteApiResponse {
+  success: boolean;
+  message?: string;
+  retryAfter?: number;
+}
+
 export const PRODUCT_CATEGORY_LABELS: Record<string, string> = {
   mdf: 'MDF & Panneaux décoratifs',
   'bois-massifs': 'Bois Massifs (Chêne, Hêtre, etc.)',
@@ -33,3 +70,4 @@ export const DEPOT_LOCATION_LABELS: Record<string, string> = {
   jaafer: 'Siège — Route de Raoued Km3 (Jâafer)',
   'sidi-amor': 'Point de Vente — Route de Gammarth Km9 (Sidi Amor)',
 };
+

@@ -3,19 +3,77 @@
 /**
  * @file ContactForm.tsx
  * @description Production quote and contact form for SOCOFEB.
- * Dispatches real quote requests to POST /api/contact, enforces server validation,
- * displays robust loading, success, and error retry states, and retains inputs on failure.
+ * Handles both:
+ * 1. Specific product quote requests: Dispatches to POST /api/quote (ACYA intake backend)
+ *    with a dedicated quantity field, required customer email, and UUID v4 idempotency.
+ * 2. General inquiries: Dispatches to POST /api/contact (existing email/webhook engine).
+ * Preserves luxury wood design tokens, accessible validation, and retry state.
  */
 
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Send, CheckCircle2, AlertCircle, MessageSquare, Loader2 } from 'lucide-react';
+import { Send, CheckCircle2, AlertCircle, MessageSquare, Loader2, PackageCheck } from 'lucide-react';
 import { COMPANY_INFO } from '@/lib/catalog';
 import { cn } from '@/lib/utils';
-import { ContactFormData, ContactApiResponse } from '@/types/contact';
+import {
+  ContactFormData,
+  ContactApiResponse,
+  QuoteRequestBody,
+  QuoteApiResponse,
+  PRODUCT_CATEGORY_LABELS,
+} from '@/types/contact';
 
+/**
+ * Generates an RFC 4122 compliant UUID v4 string across browser and test runtimes.
+ */
+function generateUuidV4(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+// 1. Schema for Product Quote Requests (ACYA Intake)
+const quoteSchema = z.object({
+  fullName: z
+    .string()
+    .trim()
+    .min(2, 'Veuillez saisir votre nom complet')
+    .max(150, 'Le nom ne peut pas dépasser 150 caractères'),
+  email: z
+    .string({ required_error: 'Veuillez renseigner votre adresse email' })
+    .trim()
+    .email('Adresse email invalide')
+    .max(150, "L'adresse email ne peut pas dépasser 150 caractères"),
+  phone: z
+    .string()
+    .trim()
+    .max(50, 'Numéro de téléphone trop long')
+    .optional()
+    .or(z.literal('')),
+  quantity: z
+    .string({ required_error: 'Veuillez préciser la quantité souhaitée' })
+    .trim()
+    .min(1, 'Veuillez préciser la quantité souhaitée (ex: 50 panneaux, 2 m³)')
+    .max(100, 'La quantité ne peut pas dépasser 100 caractères'),
+  category: z.string().default('mdf'),
+  location: z.string().default('both'),
+  message: z
+    .string()
+    .trim()
+    .max(2000, 'Votre message est trop long')
+    .optional()
+    .or(z.literal('')),
+  botField: z.string().optional(),
+});
+
+// 2. Schema for General Inquiries (/api/contact backward compatibility)
 const contactSchema = z.object({
   fullName: z
     .string()
@@ -33,6 +91,7 @@ const contactSchema = z.object({
     .email('Adresse email invalide')
     .optional()
     .or(z.literal('')),
+  quantity: z.string().optional(),
   category: z.string().min(1, 'Sélectionnez une catégorie de produit'),
   location: z.string().default('both'),
   message: z
@@ -43,20 +102,33 @@ const contactSchema = z.object({
   botField: z.string().optional(),
 });
 
+export type FormSchemaType = z.infer<typeof quoteSchema>;
+
 interface ContactFormProps {
   defaultCategory?: string;
   defaultProduct?: string;
   className?: string;
+  mode?: 'auto' | 'quote' | 'contact';
 }
 
 export function ContactForm({
   defaultCategory = 'mdf',
   defaultProduct = '',
   className,
+  mode = 'auto',
 }: ContactFormProps) {
+  // Determine mode: auto switches to 'quote' whenever a specific product is provided
+  const isQuoteMode =
+    mode === 'quote' || (mode !== 'contact' && Boolean(defaultProduct && defaultProduct.trim().length > 0));
+
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // Single idempotency key maintained in state throughout retries
+  const [idempotencyKey, setIdempotencyKey] = useState<string>(() => generateUuidV4());
+
+  const activeSchema = isQuoteMode ? quoteSchema : contactSchema;
 
   const {
     register,
@@ -64,47 +136,102 @@ export function ContactForm({
     reset,
     watch,
     formState: { errors },
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
+  } = useForm<FormSchemaType>({
+    resolver: zodResolver(activeSchema),
     defaultValues: {
       category: defaultCategory,
       location: 'both',
-      message: defaultProduct ? `Demande de devis pour : ${defaultProduct}` : '',
+      quantity: '',
+      message: isQuoteMode ? '' : defaultProduct ? `Demande de devis pour : ${defaultProduct}` : '',
       botField: '',
+      fullName: '',
+      email: '',
+      phone: '',
     },
   });
 
   const formValues = watch();
 
-  const onSubmit = async (data: ContactFormData) => {
+  const onSubmit = async (data: FormSchemaType) => {
     setIsSubmitting(true);
     setSubmitError(null);
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      if (isQuoteMode) {
+        // --- 1. PRODUCT QUOTE INTAKE (ACYA ENDPOINT) ---
+        const resolvedProduct =
+          defaultProduct ||
+          `${PRODUCT_CATEGORY_LABELS[data.category] || data.category}`;
 
-      const result: ContactApiResponse = await response.json().catch(() => ({
-        success: false,
-        message: 'Réponse serveur inattendue.',
-      }));
+        const quotePayload: QuoteRequestBody = {
+          product: resolvedProduct,
+          quantity: data.quantity || 'Non précisé',
+          customerName: data.fullName,
+          customerEmail: data.email,
+          customerPhone: data.phone && data.phone.trim().length > 0 ? data.phone.trim() : undefined,
+          message: data.message && data.message.trim().length > 0 ? data.message.trim() : undefined,
+          idempotencyKey,
+          botField: data.botField,
+        };
 
-      if (response.ok && result.success) {
-        setIsSubmitted(true);
-        setSubmitError(null);
-        reset(); // Reset form fields ONLY upon confirmed acceptance
+        const response = await fetch('/api/quote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(quotePayload),
+        });
+
+        const result: QuoteApiResponse = await response.json().catch(() => ({
+          success: false,
+          message: 'Réponse serveur inattendue.',
+        }));
+
+        // HTTP 202 or 200: Durable acceptance
+        if (response.ok && result.success) {
+          setIsSubmitted(true);
+          setSubmitError(null);
+          reset();
+        } else {
+          // Failure retains inputs and same idempotency key
+          const errorMsg =
+            result.message ||
+            "Une erreur est survenue lors de l'enregistrement de votre demande de devis. Vos informations sont conservées ci-dessous.";
+          setSubmitError(errorMsg);
+        }
       } else {
-        const errorMsg =
-          result.message ||
-          "Une erreur est survenue lors de l'enregistrement de votre demande. Vos informations sont conservées ci-dessous.";
-        setSubmitError(errorMsg);
+        // --- 2. GENERAL INQUIRIES (EXISTING /api/contact ENDPOINT) ---
+        const contactPayload: ContactFormData = {
+          fullName: data.fullName,
+          phone: data.phone || '',
+          email: data.email,
+          category: data.category,
+          location: data.location,
+          message: data.message || '',
+          botField: data.botField,
+        };
+
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(contactPayload),
+        });
+
+        const result: ContactApiResponse = await response.json().catch(() => ({
+          success: false,
+          message: 'Réponse serveur inattendue.',
+        }));
+
+        if (response.ok && result.success) {
+          setIsSubmitted(true);
+          setSubmitError(null);
+          reset();
+        } else {
+          const errorMsg =
+            result.message ||
+            "Une erreur est survenue lors de l'enregistrement de votre message. Vos informations sont conservées ci-dessous.";
+          setSubmitError(errorMsg);
+        }
       }
-    } catch (err) {
+    } catch {
       setSubmitError(
         'Impossible de joindre le serveur. Veuillez vérifier votre connexion internet ou nous contacter directement via WhatsApp.'
       );
@@ -113,13 +240,22 @@ export function ContactForm({
     }
   };
 
+  const handleResetForNewRequest = () => {
+    setIsSubmitted(false);
+    setSubmitError(null);
+    reset();
+    // Fresh UUID generated only upon starting a genuinely new submission
+    setIdempotencyKey(generateUuidV4());
+  };
+
   const whatsappDirectUrl = () => {
     const text = encodeURIComponent(
       `Bonjour SOCOFEB, je souhaite un devis :
 - Nom : ${formValues.fullName || 'Client'}
 - Téléphone : ${formValues.phone || ''}
-- Catégorie : ${formValues.category || defaultCategory}
-- Détails : ${formValues.message || defaultProduct || 'Demande générale'}`
+- Email : ${formValues.email || ''}
+- Produit : ${defaultProduct || formValues.category || defaultCategory}
+${isQuoteMode && formValues.quantity ? `- Quantité : ${formValues.quantity}\n` : ''}- Détails : ${formValues.message || 'Demande générale'}`
     );
     return `${COMPANY_INFO.whatsappUrl}?text=${text}`;
   };
@@ -131,17 +267,32 @@ export function ContactForm({
         className
       )}
     >
-      <div className="mb-8">
+      <div className="mb-6">
         <span className="text-xs font-bold uppercase tracking-widest text-accent bg-accent/10 px-3 py-1 rounded-full border border-accent/20">
-          Devis &amp; Renseignement Rapide
+          {isQuoteMode ? 'Devis Personnalisé' : 'Renseignement Rapide'}
         </span>
         <h3 className="font-heading text-2xl sm:text-3xl font-bold text-primary mt-3">
-          Demandez Votre Devis Gratuit
+          {isQuoteMode ? 'Demandez Votre Devis Gratuit' : 'Contactez Notre Équipe'}
         </h3>
         <p className="text-charcoal-light text-sm mt-1">
-          Réponse rapide sous 24h par notre équipe commerciale à l&apos;Ariana.
+          {isQuoteMode
+            ? 'Confirmation immédiate par email et réponse sous 24h par notre équipe commerciale à Jâafer.'
+            : "Réponse rapide sous 24h par notre équipe commerciale à l'Ariana."}
         </p>
       </div>
+
+      {/* Quote Product Context Banner */}
+      {isQuoteMode && defaultProduct && (
+        <div className="mb-6 p-4 rounded-2xl bg-wood-cream/60 border border-accent/30 flex items-start gap-3">
+          <PackageCheck className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-secondary block">
+              Produit sélectionné
+            </span>
+            <p className="font-bold text-sm text-primary">{defaultProduct}</p>
+          </div>
+        </div>
+      )}
 
       {isSubmitted ? (
         <div className="text-center py-10 bg-wood-cream/50 rounded-2xl border border-accent/30 p-6 animate-in fade-in duration-300">
@@ -150,23 +301,21 @@ export function ContactForm({
             Demande reçue avec succès !
           </h4>
           <p className="text-charcoal-light text-sm max-w-md mx-auto mb-6">
-            Merci. Notre conseiller Mohamed Amine KLABI ou un membre de notre
-            équipe vous recontactera très rapidement au numéro indiqué.
+            {isQuoteMode
+              ? 'Merci ! Votre demande a été transmise à SOCOFEB. Un email de confirmation récapitulatif vous a été envoyé.'
+              : 'Merci. Notre conseiller Mohamed Amine KLABI ou un membre de notre équipe vous recontactera très rapidement.'}
           </p>
           <button
             type="button"
-            onClick={() => {
-              setIsSubmitted(false);
-              setSubmitError(null);
-            }}
-            className="px-6 py-2.5 rounded-xl bg-primary hover:bg-secondary text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md"
+            onClick={handleResetForNewRequest}
+            className="px-6 py-2.5 rounded-xl bg-primary hover:bg-secondary text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer"
           >
             Nouvelle demande
           </button>
         </div>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
-          {/* Honeypot anti-bot field (hidden from sighted users and screen readers) */}
+          {/* Honeypot anti-bot field */}
           <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
             <label htmlFor="botField">Champ de sécurité anti-spam (laisser vide)</label>
             <input
@@ -188,7 +337,7 @@ export function ContactForm({
               <div className="flex-1 space-y-1.5">
                 <p className="font-bold text-red-950">{submitError}</p>
                 <p className="text-red-700 text-xs">
-                  Vos informations saisies sont intactes ci-dessous. Vous pouvez réessayer ou finaliser directement votre demande via WhatsApp.
+                  Vos informations saisies sont intactes ci-dessous. Vous pouvez cliquer à nouveau sur Envoyer ou finaliser directement via WhatsApp.
                 </p>
               </div>
             </div>
@@ -221,10 +370,86 @@ export function ContactForm({
               )}
             </div>
 
-            {/* Téléphone */}
+            {/* Email (Obligatoire en mode devis ACYA, optionnel en contact général) */}
             <div>
               <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
-                Numéro de Téléphone *
+                Adresse Email {isQuoteMode ? '*' : '(Optionnel)'}
+              </label>
+              <input
+                type="email"
+                placeholder="votre-email@exemple.com"
+                disabled={isSubmitting}
+                {...register('email')}
+                className={cn(
+                  'w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 bg-wood-cream/30',
+                  errors.email
+                    ? 'border-red-500 focus:ring-red-200'
+                    : 'border-wood-border focus:border-accent focus:ring-accent/20',
+                  isSubmitting && 'opacity-60 cursor-not-allowed'
+                )}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {/* Quantité souhaitée (Mode Devis) OU Catégorie (Mode Contact Général) */}
+            {isQuoteMode ? (
+              <div>
+                <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
+                  Quantité Souhaitée *
+                </label>
+                <input
+                  type="text"
+                  placeholder="Ex: 50 panneaux, 2 m³, 1 palette..."
+                  disabled={isSubmitting}
+                  {...register('quantity')}
+                  className={cn(
+                    'w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 bg-wood-cream/30',
+                    errors.quantity
+                      ? 'border-red-500 focus:ring-red-200'
+                      : 'border-wood-border focus:border-accent focus:ring-accent/20',
+                    isSubmitting && 'opacity-60 cursor-not-allowed'
+                  )}
+                />
+                {errors.quantity && (
+                  <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    {errors.quantity.message}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <div>
+                <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
+                  Type de Produit *
+                </label>
+                <select
+                  disabled={isSubmitting}
+                  {...register('category')}
+                  className={cn(
+                    'w-full px-4 py-3 rounded-xl border border-wood-border text-sm focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 bg-wood-cream/30',
+                    isSubmitting && 'opacity-60 cursor-not-allowed'
+                  )}
+                >
+                  <option value="mdf">MDF &amp; Panneaux décoratifs</option>
+                  <option value="bois-massifs">Bois Massifs (Chêne, Hêtre, etc.)</option>
+                  <option value="contreplaque">Contreplaqué Structurel / Marine</option>
+                  <option value="osb">OSB/3 Norme EN 300</option>
+                  <option value="autre">Autre demande spécifique</option>
+                </select>
+              </div>
+            )}
+
+            {/* Téléphone (Obligatoire en mode contact, optionnel en mode devis) */}
+            <div>
+              <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
+                Numéro de Téléphone {isQuoteMode ? '(Optionnel)' : '*'}
               </label>
               <input
                 type="tel"
@@ -248,29 +473,7 @@ export function ContactForm({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {/* Catégorie */}
-            <div>
-              <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
-                Type de Produit *
-              </label>
-              <select
-                disabled={isSubmitting}
-                {...register('category')}
-                className={cn(
-                  'w-full px-4 py-3 rounded-xl border border-wood-border text-sm focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 bg-wood-cream/30',
-                  isSubmitting && 'opacity-60 cursor-not-allowed'
-                )}
-              >
-                <option value="mdf">MDF &amp; Panneaux décoratifs</option>
-                <option value="bois-massifs">Bois Massifs (Chêne, Hêtre, etc.)</option>
-                <option value="contreplaque">Contreplaqué Structurel / Marine</option>
-                <option value="osb">OSB/3 Norme EN 300</option>
-                <option value="autre">Autre demande spécifique</option>
-              </select>
-            </div>
-
-            {/* Dépôt préféré */}
+          {!isQuoteMode && (
             <div>
               <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
                 Dépôt de Retrait Préféré
@@ -288,42 +491,22 @@ export function ContactForm({
                 <option value="sidi-amor">Point de Vente — Route de Gammarth Km9 (Sidi Amor)</option>
               </select>
             </div>
-          </div>
-
-          {/* Email optionnel */}
-          <div>
-            <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
-              Adresse Email (Optionnel)
-            </label>
-            <input
-              type="email"
-              placeholder="votre-email@exemple.com"
-              disabled={isSubmitting}
-              {...register('email')}
-              className={cn(
-                'w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 bg-wood-cream/30',
-                errors.email
-                  ? 'border-red-500 focus:ring-red-200'
-                  : 'border-wood-border focus:border-accent focus:ring-accent/20',
-                isSubmitting && 'opacity-60 cursor-not-allowed'
-              )}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
-                <AlertCircle className="w-3.5 h-3.5" />
-                {errors.email.message}
-              </p>
-            )}
-          </div>
+          )}
 
           {/* Message / Détails */}
           <div>
             <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
-              Détails de votre besoin (dimensions, quantités, références) *
+              {isQuoteMode
+                ? 'Précisions & Spécifications techniques (Optionnel)'
+                : 'Détails de votre besoin (dimensions, quantités, références) *'}
             </label>
             <textarea
               rows={4}
-              placeholder="Ex: 50 panneaux MDF Stratifié Chêne Naturel en 18mm + 2 m³ de Bois Blanc raboté..."
+              placeholder={
+                isQuoteMode
+                  ? 'Ex: Découpe sur mesure demandée, livraison chantier Ariana, épaisseur 18mm...'
+                  : 'Ex: 50 panneaux MDF Stratifié Chêne Naturel en 18mm + 2 m³ de Bois Blanc raboté...'
+              }
               disabled={isSubmitting}
               {...register('message')}
               className={cn(
@@ -357,7 +540,7 @@ export function ContactForm({
               ) : (
                 <>
                   <Send className="w-4 h-4" />
-                  Envoyer la demande de devis
+                  {isQuoteMode ? 'Envoyer la demande de devis' : 'Envoyer le message'}
                 </>
               )}
             </button>
