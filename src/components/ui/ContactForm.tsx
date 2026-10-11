@@ -117,9 +117,24 @@ export function ContactForm({
   className,
   mode = 'auto',
 }: ContactFormProps) {
-  // Determine mode: auto switches to 'quote' whenever a specific product is provided
-  const isQuoteMode =
-    mode === 'quote' || (mode !== 'contact' && Boolean(defaultProduct && defaultProduct.trim().length > 0));
+  // When a specific product is provided, lock to quote mode.
+  // When mode is explicitly 'quote' or 'contact', lock to that mode.
+  // When mode is 'auto' without a fixed product (e.g. /contact page), provide tab switching,
+  // defaulting to 'quote' mode so quotation requests are immediately accessible.
+  const hasFixedMode =
+    mode === 'quote' ||
+    mode === 'contact' ||
+    Boolean(defaultProduct && defaultProduct.trim().length > 0);
+
+  const [activeTab, setActiveTab] = useState<'quote' | 'contact'>(
+    mode === 'contact' ? 'contact' : 'quote'
+  );
+
+  const isQuoteMode = hasFixedMode
+    ? mode === 'contact'
+      ? false
+      : true
+    : activeTab === 'quote';
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -135,6 +150,7 @@ export function ContactForm({
     handleSubmit,
     reset,
     watch,
+    clearErrors,
     formState: { errors },
   } = useForm<FormSchemaType>({
     resolver: zodResolver(activeSchema),
@@ -254,7 +270,7 @@ export function ContactForm({
 - Nom : ${formValues.fullName || 'Client'}
 - Téléphone : ${formValues.phone || ''}
 - Email : ${formValues.email || ''}
-- Produit : ${defaultProduct || formValues.category || defaultCategory}
+- Produit : ${defaultProduct || PRODUCT_CATEGORY_LABELS[formValues.category] || formValues.category || defaultCategory}
 ${isQuoteMode && formValues.quantity ? `- Quantité : ${formValues.quantity}\n` : ''}- Détails : ${formValues.message || 'Demande générale'}`
     );
     return `${COMPANY_INFO.whatsappUrl}?text=${text}`;
@@ -267,6 +283,44 @@ ${isQuoteMode && formValues.quantity ? `- Quantité : ${formValues.quantity}\n` 
         className
       )}
     >
+      {/* Mode Switcher Tabs (Only shown when not locked to a specific product) */}
+      {!hasFixedMode && (
+        <div className="flex items-center p-1 bg-wood-cream/60 rounded-2xl border border-wood-border mb-6">
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('quote');
+              clearErrors();
+              setSubmitError(null);
+            }}
+            className={cn(
+              'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all cursor-pointer',
+              isQuoteMode
+                ? 'bg-primary text-white shadow-sm'
+                : 'text-charcoal hover:text-primary'
+            )}
+          >
+            Demande de Devis
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('contact');
+              clearErrors();
+              setSubmitError(null);
+            }}
+            className={cn(
+              'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all cursor-pointer',
+              !isQuoteMode
+                ? 'bg-primary text-white shadow-sm'
+                : 'text-charcoal hover:text-primary'
+            )}
+          >
+            Message &amp; Contact
+          </button>
+        </div>
+      )}
+
       <div className="mb-6">
         <span className="text-xs font-bold uppercase tracking-widest text-accent bg-accent/10 px-3 py-1 rounded-full border border-accent/20">
           {isQuoteMode ? 'Devis Personnalisé' : 'Renseignement Rapide'}
@@ -276,7 +330,7 @@ ${isQuoteMode && formValues.quantity ? `- Quantité : ${formValues.quantity}\n` 
         </h3>
         <p className="text-charcoal-light text-sm mt-1">
           {isQuoteMode
-            ? 'Confirmation immédiate par email et réponse sous 24h par notre équipe commerciale à Jâafer.'
+            ? 'Prise en compte immédiate de votre demande et réponse sous 24h par notre équipe commerciale à Jâafer.'
             : "Réponse rapide sous 24h par notre équipe commerciale à l'Ariana."}
         </p>
       </div>
@@ -302,7 +356,7 @@ ${isQuoteMode && formValues.quantity ? `- Quantité : ${formValues.quantity}\n` 
           </h4>
           <p className="text-charcoal-light text-sm max-w-md mx-auto mb-6">
             {isQuoteMode
-              ? 'Merci ! Votre demande a été transmise à SOCOFEB. Un email de confirmation récapitulatif vous a été envoyé.'
+              ? 'Merci ! Votre demande de devis a été enregistrée avec succès. Notre équipe commerciale à Jâafer vous répondra sous 24h.'
               : 'Merci. Notre conseiller Mohamed Amine KLABI ou un membre de notre équipe vous recontactera très rapidement.'}
           </p>
           <button
@@ -398,58 +452,163 @@ ${isQuoteMode && formValues.quantity ? `- Quantité : ${formValues.quantity}\n` 
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {/* Quantité souhaitée (Mode Devis) OU Catégorie (Mode Contact Général) */}
-            {isQuoteMode ? (
-              <div>
-                <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
-                  Quantité Souhaitée *
-                </label>
-                <input
-                  type="text"
-                  placeholder="Ex: 50 panneaux, 2 m³, 1 palette..."
-                  disabled={isSubmitting}
-                  {...register('quantity')}
-                  className={cn(
-                    'w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 bg-wood-cream/30',
-                    errors.quantity
-                      ? 'border-red-500 focus:ring-red-200'
-                      : 'border-wood-border focus:border-accent focus:ring-accent/20',
-                    isSubmitting && 'opacity-60 cursor-not-allowed'
-                  )}
-                />
-                {errors.quantity && (
-                  <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
-                    <AlertCircle className="w-3.5 h-3.5" />
-                    {errors.quantity.message}
-                  </p>
-                )}
-              </div>
-            ) : (
-              <div>
-                <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
-                  Type de Produit *
-                </label>
-                <select
-                  disabled={isSubmitting}
-                  {...register('category')}
-                  className={cn(
-                    'w-full px-4 py-3 rounded-xl border border-wood-border text-sm focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 bg-wood-cream/30',
-                    isSubmitting && 'opacity-60 cursor-not-allowed'
-                  )}
-                >
-                  <option value="mdf">MDF &amp; Panneaux décoratifs</option>
-                  <option value="bois-massifs">Bois Massifs (Chêne, Hêtre, etc.)</option>
-                  <option value="contreplaque">Contreplaqué Structurel / Marine</option>
-                  <option value="osb">OSB/3 Norme EN 300</option>
-                  <option value="autre">Autre demande spécifique</option>
-                </select>
-              </div>
-            )}
+            {/* If in quote mode without defaultProduct, show category select + quantity */}
+            {isQuoteMode && !defaultProduct ? (
+              <>
+                <div>
+                  <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
+                    Catégorie de Produit *
+                  </label>
+                  <select
+                    disabled={isSubmitting}
+                    {...register('category')}
+                    className={cn(
+                      'w-full px-4 py-3 rounded-xl border border-wood-border text-sm focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 bg-wood-cream/30',
+                      isSubmitting && 'opacity-60 cursor-not-allowed'
+                    )}
+                  >
+                    <option value="mdf">MDF &amp; Panneaux décoratifs</option>
+                    <option value="bois-massifs">Bois Massifs (Chêne, Hêtre, etc.)</option>
+                    <option value="contreplaque">Contreplaqué Structurel / Marine</option>
+                    <option value="osb">OSB/3 Norme EN 300</option>
+                    <option value="autre">Autre demande spécifique</option>
+                  </select>
+                </div>
 
-            {/* Téléphone (Obligatoire en mode contact, optionnel en mode devis) */}
+                <div>
+                  <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
+                    Quantité Souhaitée *
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Ex: 50 panneaux, 2 m³, 1 palette..."
+                    disabled={isSubmitting}
+                    {...register('quantity')}
+                    className={cn(
+                      'w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 bg-wood-cream/30',
+                      errors.quantity
+                        ? 'border-red-500 focus:ring-red-200'
+                        : 'border-wood-border focus:border-accent focus:ring-accent/20',
+                      isSubmitting && 'opacity-60 cursor-not-allowed'
+                    )}
+                  />
+                  {errors.quantity && (
+                    <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5" />
+                      {errors.quantity.message}
+                    </p>
+                  )}
+                </div>
+              </>
+            ) : isQuoteMode ? (
+              /* Quote mode with defaultProduct */
+              <>
+                <div>
+                  <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
+                    Quantité Souhaitée *
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Ex: 50 panneaux, 2 m³, 1 palette..."
+                    disabled={isSubmitting}
+                    {...register('quantity')}
+                    className={cn(
+                      'w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 bg-wood-cream/30',
+                      errors.quantity
+                        ? 'border-red-500 focus:ring-red-200'
+                        : 'border-wood-border focus:border-accent focus:ring-accent/20',
+                      isSubmitting && 'opacity-60 cursor-not-allowed'
+                    )}
+                  />
+                  {errors.quantity && (
+                    <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5" />
+                      {errors.quantity.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
+                    Numéro de Téléphone (Optionnel)
+                  </label>
+                  <input
+                    type="tel"
+                    placeholder="Ex: +216 99 218 866"
+                    disabled={isSubmitting}
+                    {...register('phone')}
+                    className={cn(
+                      'w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 bg-wood-cream/30',
+                      errors.phone
+                        ? 'border-red-500 focus:ring-red-200'
+                        : 'border-wood-border focus:border-accent focus:ring-accent/20',
+                      isSubmitting && 'opacity-60 cursor-not-allowed'
+                    )}
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5" />
+                      {errors.phone.message}
+                    </p>
+                  )}
+                </div>
+              </>
+            ) : (
+              /* General contact mode */
+              <>
+                <div>
+                  <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
+                    Type de Produit *
+                  </label>
+                  <select
+                    disabled={isSubmitting}
+                    {...register('category')}
+                    className={cn(
+                      'w-full px-4 py-3 rounded-xl border border-wood-border text-sm focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 bg-wood-cream/30',
+                      isSubmitting && 'opacity-60 cursor-not-allowed'
+                    )}
+                  >
+                    <option value="mdf">MDF &amp; Panneaux décoratifs</option>
+                    <option value="bois-massifs">Bois Massifs (Chêne, Hêtre, etc.)</option>
+                    <option value="contreplaque">Contreplaqué Structurel / Marine</option>
+                    <option value="osb">OSB/3 Norme EN 300</option>
+                    <option value="autre">Autre demande spécifique</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
+                    Numéro de Téléphone *
+                  </label>
+                  <input
+                    type="tel"
+                    placeholder="Ex: +216 99 218 866"
+                    disabled={isSubmitting}
+                    {...register('phone')}
+                    className={cn(
+                      'w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 bg-wood-cream/30',
+                      errors.phone
+                        ? 'border-red-500 focus:ring-red-200'
+                        : 'border-wood-border focus:border-accent focus:ring-accent/20',
+                      isSubmitting && 'opacity-60 cursor-not-allowed'
+                    )}
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5" />
+                      {errors.phone.message}
+                    </p>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Numéro de téléphone en mode devis sans defaultProduct */}
+          {isQuoteMode && !defaultProduct && (
             <div>
               <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">
-                Numéro de Téléphone {isQuoteMode ? '(Optionnel)' : '*'}
+                Numéro de Téléphone (Optionnel)
               </label>
               <input
                 type="tel"
@@ -471,7 +630,7 @@ ${isQuoteMode && formValues.quantity ? `- Quantité : ${formValues.quantity}\n` 
                 </p>
               )}
             </div>
-          </div>
+          )}
 
           {!isQuoteMode && (
             <div>

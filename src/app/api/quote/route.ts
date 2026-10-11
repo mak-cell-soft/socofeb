@@ -142,7 +142,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<QuoteApiR
           success: true,
           message:
             result.message ||
-            'Votre demande de devis a été enregistrée avec succès. Un email de confirmation vous a été envoyé.',
+            'Votre demande de devis a été enregistrée avec succès. Notre équipe commerciale traitera votre demande sous 24h.',
         },
         { status: 202 }
       );
