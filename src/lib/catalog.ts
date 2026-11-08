@@ -285,7 +285,7 @@ export const EXTENDED_SUPPLIER_CONFIG: Record<string, SupplierInfo> = {
     name: 'Egypanel',
     fullName: 'Egypanel Wood Industries',
     website: 'https://egypanel.com',
-    logo: '/images/egypanel/logo/egypanel-logo.jfif',
+    logo: '/images/egypanel/logo/egypanel-logo.png',
     color: '#B45309',
     description: 'Spécialiste des panneaux mélaminés et surfaces brillantes haute performance.',
     collections: ['Galaxy Series', 'Mélaminés Uni & Matière'],

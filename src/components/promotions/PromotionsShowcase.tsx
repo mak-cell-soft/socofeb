@@ -142,20 +142,20 @@ export function PromotionsShowcase({ initialManifest }: PromotionsShowcaseProps)
   };
 
   return (
-    <div className="bg-bg-light min-h-screen py-8 sm:py-12">
+    <div className="bg-bg-light min-h-screen pt-4 pb-12 sm:pt-6 sm:pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Breadcrumb items={[{ label: 'Promotions' }]} />
 
-        {/* 1. Page Header */}
-        <header className="my-8 sm:my-12 text-center max-w-3xl mx-auto">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-primary bg-accent/20 px-3.5 py-1 rounded-full border border-accent/40 shadow-2xs">
-            <Tag className="w-3.5 h-3.5 text-accent" />
+        {/* 1. Page Header (Refined compact layout) */}
+        <header className="mt-2 mb-6 sm:mt-3 sm:mb-8 text-center max-w-3xl mx-auto">
+          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-primary bg-accent/20 px-3 py-0.5 rounded-full border border-accent/40 shadow-2xs mb-2 sm:mb-2.5">
+            <Tag className="w-3 h-3 text-accent" />
             Bons Plans &amp; Déstockage Usine
           </span>
-          <h1 className="font-heading text-3xl sm:text-5xl font-bold text-primary mt-3 mb-4 tracking-tight">
+          <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-2 sm:mb-2.5 tracking-tight">
             Offres &amp; Promotions Fournisseurs
           </h1>
-          <p className="text-charcoal-light text-sm sm:text-base leading-relaxed">
+          <p className="text-charcoal-light text-xs sm:text-sm leading-relaxed max-w-2xl mx-auto">
             Consultez les remises immédiates sur nos arrivages de panneaux MDF, décors mélaminés, surfaces High Gloss et contreplaqués à nos dépôts d&apos;Ariana (Jâafer Km 3 et Sidi Amor Km 9).
           </p>
         </header>
@@ -275,41 +275,41 @@ export function PromotionsShowcase({ initialManifest }: PromotionsShowcaseProps)
           </motion.div>
         ) : (
           <>
-            {/* 3. Promotional Statistics Banner */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 border border-wood-border shadow-card mb-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-wood-border">
+            {/* 3. Promotional Statistics Banner (Compact refined layout) */}
+            <div className="bg-white rounded-2xl p-3 sm:p-4 lg:p-5 border border-wood-border shadow-card mb-5 sm:mb-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-wood-border">
                 <div className="pt-2 md:pt-0">
-                  <span className="block font-heading text-2xl sm:text-3xl font-extrabold text-primary">
+                  <span className="block font-heading text-xl sm:text-2xl lg:text-3xl font-extrabold text-primary">
                     {allPromotions.length}
                   </span>
-                  <span className="text-xs text-charcoal-light uppercase tracking-wider font-semibold">
+                  <span className="text-[11px] sm:text-xs text-charcoal-light uppercase tracking-wider font-semibold">
                     Décors en Promotion
                   </span>
                 </div>
 
                 <div className="pt-2 md:pt-0">
-                  <span className="block font-heading text-2xl sm:text-3xl font-extrabold text-secondary">
+                  <span className="block font-heading text-xl sm:text-2xl lg:text-3xl font-extrabold text-secondary">
                     {activeSuppliers.length}
                   </span>
-                  <span className="text-xs text-charcoal-light uppercase tracking-wider font-semibold">
+                  <span className="text-[11px] sm:text-xs text-charcoal-light uppercase tracking-wider font-semibold">
                     Marques Partenaires
                   </span>
                 </div>
 
                 <div className="pt-2 md:pt-0">
-                  <span className="block font-heading text-2xl sm:text-3xl font-extrabold text-accent">
+                  <span className="block font-heading text-xl sm:text-2xl lg:text-3xl font-extrabold text-accent">
                     {availableDiscounts.length > 0 ? `-${Math.max(...availableDiscounts)}%` : 'Direct Usine'}
                   </span>
-                  <span className="text-xs text-charcoal-light uppercase tracking-wider font-semibold">
+                  <span className="text-[11px] sm:text-xs text-charcoal-light uppercase tracking-wider font-semibold">
                     Remise Immédiate
                   </span>
                 </div>
 
                 <div className="pt-2 md:pt-0">
-                  <span className="block font-heading text-2xl sm:text-3xl font-extrabold text-primary">
+                  <span className="block font-heading text-xl sm:text-2xl lg:text-3xl font-extrabold text-primary">
                     2 Dépôts
                   </span>
-                  <span className="text-xs text-charcoal-light uppercase tracking-wider font-semibold">
+                  <span className="text-[11px] sm:text-xs text-charcoal-light uppercase tracking-wider font-semibold">
                     Jâafer &amp; Sidi Amor
                   </span>
                 </div>
@@ -317,7 +317,7 @@ export function PromotionsShowcase({ initialManifest }: PromotionsShowcaseProps)
             </div>
 
             {/* 4. Controls: Brand Navigation, Search, and Conditional Discount Filter */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 border border-wood-border shadow-card mb-10 space-y-4">
+            <div className="bg-white rounded-2xl p-3.5 sm:p-5 border border-wood-border shadow-card mb-6 sm:mb-8 space-y-3 sm:space-y-4">
               {/* Top Row: Search Input + Active Summary */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
                 {/* Search Bar */}
@@ -491,14 +491,14 @@ export function PromotionsShowcase({ initialManifest }: PromotionsShowcaseProps)
                 </button>
               </div>
             ) : (
-              <div className="space-y-14 mb-16">
+              <div className="space-y-10 sm:space-y-12 mb-14">
                 {promotionsBySupplier.map(({ supplier, items }) => (
                   <section
                     key={supplier.supplier}
-                    className="relative bg-white/70 rounded-3xl p-6 sm:p-8 border border-wood-border shadow-card backdrop-blur-xs"
+                    className="relative bg-white/70 rounded-3xl p-5 sm:p-7 border border-wood-border shadow-card backdrop-blur-xs"
                   >
                     {/* Supplier Section Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-wood-border/70">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-4 sm:pb-5 mb-5 sm:mb-6 border-b border-wood-border/70">
                       <div className="flex items-center gap-4">
                         {/* Supplier Logo Container */}
                         <div className="w-20 h-12 rounded-xl bg-white border border-wood-border p-2 flex items-center justify-center shrink-0 shadow-2xs">

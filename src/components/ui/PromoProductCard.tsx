@@ -4,7 +4,7 @@
  * PromoProductCard Component — SOCOFEB
  *
  * Showroom-grade promotional card for discounted decorative wood and panel products.
- * Image dominates visually with subtle hover elevation and clear supplier branding.
+ * The product image is the sole visual focal point without overlay clutter.
  */
 
 import React from 'react';
@@ -41,7 +41,7 @@ export function PromoProductCard({
         className
       )}
     >
-      {/* 1. Visual Dominance: Image Container with Lightbox Trigger */}
+      {/* 1. Visual Dominance: Unobstructed Image Container with Lightbox Trigger */}
       <div
         className="relative aspect-[4/3] w-full overflow-hidden bg-wood-cream/40 cursor-pointer select-none"
         onClick={onOpenLightbox}
@@ -64,10 +64,7 @@ export function PromoProductCard({
           className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
         />
 
-        {/* Subtle Dark Gradient Overlay for Badges Readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30 pointer-events-none" />
-
-        {/* Top Badges: Discount Ribbon + Quick Zoom Action */}
+        {/* Top Badges: ONLY Discount Ribbon in Top-Left and Lightbox Icon in Top-Right */}
         <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none">
           {/* Discount Badge */}
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-accent text-primary font-black text-xs uppercase tracking-wider shadow-md border border-accent/40 backdrop-blur-xs">
@@ -87,39 +84,6 @@ export function PromoProductCard({
           >
             <Maximize2 className="w-3.5 h-3.5" />
           </button>
-        </div>
-
-        {/* Bottom Overlay inside Image: Supplier Identity */}
-        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none">
-          <div className="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-lg shadow-sm border border-wood-border">
-            {promo.supplierLogo ? (
-              <div className="relative h-4 w-14 flex items-center justify-center">
-                <Image
-                  src={promo.supplierLogo}
-                  alt={`Logo ${promo.supplierName}`}
-                  fill
-                  sizes="56px"
-                  className="object-contain"
-                />
-              </div>
-            ) : (
-              <>
-                <span
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: promo.supplierColor || '#C8922A' }}
-                />
-                <span className="text-[11px] font-bold text-primary tracking-wide">
-                  {promo.supplierName}
-                </span>
-              </>
-            )}
-          </div>
-
-          {promo.supplierBadge && (
-            <span className="hidden sm:inline-block text-[10px] font-semibold text-white/90 bg-black/60 px-2 py-0.5 rounded backdrop-blur-xs">
-              {promo.supplierBadge}
-            </span>
-          )}
         </div>
       </div>
 

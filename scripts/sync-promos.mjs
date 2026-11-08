@@ -155,11 +155,19 @@ function resolveSupplierLogo(publicDir, supplier) {
   if (fs.existsSync(logoDir)) {
     try {
       const files = fs.readdirSync(logoDir);
-      // Prioritize SVG, then PNG/WebP, then others
+      // Prioritize SVG, then PNG, then WebP, then others
       const validFiles = files.filter((f) => LOGO_EXTENSIONS.has(path.extname(f).toLowerCase()));
       const svgLogo = validFiles.find((f) => path.extname(f).toLowerCase() === '.svg');
       if (svgLogo) {
         return `/images/${supplier}/logo/${svgLogo}`;
+      }
+      const pngLogo = validFiles.find((f) => path.extname(f).toLowerCase() === '.png');
+      if (pngLogo) {
+        return `/images/${supplier}/logo/${pngLogo}`;
+      }
+      const webpLogo = validFiles.find((f) => path.extname(f).toLowerCase() === '.webp');
+      if (webpLogo) {
+        return `/images/${supplier}/logo/${webpLogo}`;
       }
       if (validFiles.length > 0) {
         return `/images/${supplier}/logo/${validFiles[0]}`;

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-08T00:06:46.830Z",
+  "updatedAt": "2026-11-08T00:33:02.224Z",
   "totalPromotions": 14,
   "availableDiscounts": [
     10
@@ -26,7 +26,7 @@
     {
       "supplier": "egypanel",
       "name": "Egypanel",
-      "logo": "/images/egypanel/logo/egypanel-logo.jfif",
+      "logo": "/images/egypanel/logo/egypanel-logo.png",
       "color": "#B45309",
       "badgeText": "Partenaire Import",
       "website": "https://egypanel.com",
@@ -169,7 +169,7 @@
       "id": "egypanel-10-8008",
       "supplier": "egypanel",
       "supplierName": "Egypanel",
-      "supplierLogo": "/images/egypanel/logo/egypanel-logo.jfif",
+      "supplierLogo": "/images/egypanel/logo/egypanel-logo.png",
       "supplierColor": "#B45309",
       "supplierBadge": "Partenaire Import",
       "supplierWebsite": "https://egypanel.com",
@@ -188,7 +188,7 @@
       "id": "egypanel-10-8108",
       "supplier": "egypanel",
       "supplierName": "Egypanel",
-      "supplierLogo": "/images/egypanel/logo/egypanel-logo.jfif",
+      "supplierLogo": "/images/egypanel/logo/egypanel-logo.png",
       "supplierColor": "#B45309",
       "supplierBadge": "Partenaire Import",
       "supplierWebsite": "https://egypanel.com",
@@ -207,7 +207,7 @@
       "id": "egypanel-10-8090",
       "supplier": "egypanel",
       "supplierName": "Egypanel",
-      "supplierLogo": "/images/egypanel/logo/egypanel-logo.jfif",
+      "supplierLogo": "/images/egypanel/logo/egypanel-logo.png",
       "supplierColor": "#B45309",
       "supplierBadge": "Partenaire Import",
       "supplierWebsite": "https://egypanel.com",
