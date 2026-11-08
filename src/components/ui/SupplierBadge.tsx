@@ -2,17 +2,17 @@
 
 import React from 'react';
 import { Supplier } from '@/types/image';
-import { SUPPLIER_CONFIG } from '@/lib/catalog';
+import { getSupplierConfig } from '@/lib/catalog';
 import { cn } from '@/lib/utils';
 
 interface SupplierBadgeProps {
-  supplier: Supplier;
+  supplier: Supplier | string;
   className?: string;
   size?: 'sm' | 'md' | 'lg';
 }
 
 export function SupplierBadge({ supplier, className, size = 'sm' }: SupplierBadgeProps) {
-  const config = SUPPLIER_CONFIG[supplier];
+  const config = getSupplierConfig(supplier);
   if (!config) return null;
 
   const sizeClasses = {

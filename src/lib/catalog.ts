@@ -1,6 +1,6 @@
 // src/lib/catalog.ts
 import { ProductCategoryGroup } from '@/types/product';
-import { SupplierConfigMap } from '@/types/supplier';
+import { SupplierConfigMap, SupplierInfo } from '@/types/supplier';
 
 export const PRODUCT_CATEGORIES: ProductCategoryGroup[] = [
   {
@@ -268,6 +268,87 @@ export const SUPPLIER_CONFIG: SupplierConfigMap = {
     badgeText: 'Importation Directe'
   },
 };
+
+export const EXTENDED_SUPPLIER_CONFIG: Record<string, SupplierInfo> = {
+  alfa: {
+    name: 'Alfa',
+    fullName: 'Alfa Forest Products',
+    website: 'https://alfawood.gr',
+    logo: '/images/alfa/logo/alfa-logo.png',
+    color: '#0D9488',
+    description: 'Fabricant de panneaux décoratifs mélaminés et surfaces Super Gloss de haute précision.',
+    collections: ['Super Gloss', 'Mélaminé Contemporain'],
+    promoFolder: '/images/alfa/promo/',
+    badgeText: 'Partenaire Import',
+  },
+  egypanel: {
+    name: 'Egypanel',
+    fullName: 'Egypanel Wood Industries',
+    website: 'https://egypanel.com',
+    logo: '/images/egypanel/logo/egypanel-logo.jfif',
+    color: '#B45309',
+    description: 'Spécialiste des panneaux mélaminés et surfaces brillantes haute performance.',
+    collections: ['Galaxy Series', 'Mélaminés Uni & Matière'],
+    promoFolder: '/images/egypanel/promo/',
+    badgeText: 'Partenaire Import',
+  },
+  evo: {
+    name: 'EVO',
+    fullName: 'EVO Surfaces & Panels',
+    website: 'https://evopanel.com',
+    logo: '/images/evo/logo/evo-logo.png',
+    color: '#4338CA',
+    description: 'Surfaces contemporaines mates et finitions super soft touch pour agencements modernes.',
+    collections: ['Soft MAT', 'Super Storm Series'],
+    promoFolder: '/images/evo/promo/',
+    badgeText: 'Surfaces Contemporaines',
+  },
+  stillay: {
+    name: 'Stillay',
+    fullName: 'Stillay Decor Panels',
+    website: 'https://stillay.com',
+    logo: '/images/stillay/logo/stillay-logo.png',
+    color: '#7C3AED',
+    description: 'Panneaux décoratifs et finitions intérieures d\'importation directe.',
+    collections: ['Décors Sable', 'Ligne Décorative'],
+    promoFolder: '/images/stillay/promo/',
+    badgeText: 'Partenaire Import',
+  },
+};
+
+/**
+ * Resolves configuration for any supplier:
+ * 1. Checks core catalogue suppliers (SUPPLIER_CONFIG).
+ * 2. Checks registered extended promotional suppliers (EXTENDED_SUPPLIER_CONFIG).
+ * 3. Falls back to a clean, generic fallback for unknown future suppliers without invented branding.
+ */
+export function getSupplierConfig(supplierKey: string): SupplierInfo {
+  const normalized = (supplierKey || '').toLowerCase().trim();
+
+  // 1. Primary core supplier
+  if (normalized in SUPPLIER_CONFIG) {
+    return SUPPLIER_CONFIG[normalized as keyof typeof SUPPLIER_CONFIG];
+  }
+
+  // 2. Registered extended supplier
+  if (normalized in EXTENDED_SUPPLIER_CONFIG) {
+    return EXTENDED_SUPPLIER_CONFIG[normalized];
+  }
+
+  // 3. Generic fallback for future suppliers without invented metadata
+  const readableName = normalized ? normalized.charAt(0).toUpperCase() + normalized.slice(1) : 'Fournisseur';
+  return {
+    name: readableName,
+    fullName: readableName,
+    website: '',
+    logo: `/images/${normalized}/logo/${normalized}-logo.png`,
+    color: '#555555',
+    description: `Sélection de panneaux et décors ${readableName}.`,
+    collections: [],
+    promoFolder: `/images/${normalized}/promo/`,
+    badgeText: 'Fournisseur Agréé',
+  };
+}
 
 export const COMPANY_INFO = {
   name: 'SOCOFEB',
